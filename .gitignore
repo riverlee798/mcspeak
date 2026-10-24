@@ -1,0 +1,39 @@
+# ── 运行时数据（用户偏好 / 反馈，含个人信息，绝不入库）
+data/*
+!data/README.md
+
+# ── 环境与真实配置（只保留模板）
+.env
+.env.*
+mcp.json
+config.json
+!mcp-config.example.json
+
+# ── 演示与渲染产物
+examples/demo/
+examples/**/_tmp/
+_tmp/
+_selftest/
+_chk/
+
+# ── Python / 系统
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# ── 编辑器与系统
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# ── 临时文件
+*.tmp
+*.log
+*.bak
+
+# ── 截图目录保留（GitHub Pages 用）
+!docs/screenshots/
+!docs/screenshots/*.png

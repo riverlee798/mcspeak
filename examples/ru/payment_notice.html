@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>mcspeak · payment notice</title>
+<style>
+  :root{--red:#D0021B;--yellow:#FFC72C;--ink:#0B0B0B;--muted:#525252;--line:#DDD;--page:#ECECEC;--bg:#fff;
+        --font:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB",
+               "Microsoft YaHei","Noto Sans CJK SC","Noto Sans SC","Source Han Sans SC",
+               "Noto Sans Arabic","Noto Sans Thai","Noto Sans Devanagari",Tahoma,Arial,sans-serif;}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--page);color:var(--ink);font-family:var(--font)}
+  .wrap{max-width:1000px;margin:0 auto;padding:10px}
+  .card{background:var(--bg);border-radius:16px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.10)}
+  .hd{display:flex;gap:10px;align-items:center;border-bottom:4px solid var(--ink);padding-bottom:10px}
+  .hd .logo{width:42px;height:42px;border-radius:10px;background:var(--red);color:#fff;display:flex;
+            align-items:center;justify-content:center;font-size:22px;font-weight:900}
+  .hd .st{font-size:15px;font-weight:900;line-height:1.25}
+  .hd .st i{display:block;font-size:12px;color:var(--muted);font-style:normal;font-weight:700;margin-top:2px}
+  .row{display:grid;grid-template-columns:1fr;gap:3px;padding:11px 0;border-bottom:2px solid var(--line);
+       align-items:start;direction:ltr}
+  .row .zh{font-size:clamp(21px,5.4vw,29px);font-weight:900;line-height:1.32}
+  .row .loc{font-size:clamp(14px,3.5vw,17px);font-weight:700;line-height:1.42;color:var(--muted)}
+  .row .loc[dir="rtl"]{text-align:right}
+  @media (min-width:640px) and (orientation:landscape){
+    .row{grid-template-columns:1fr 1fr;gap:20px}
+    .row .zh{padding-inline-end:18px;border-inline-end:3px solid var(--line)}
+  }
+  .num{display:inline-flex;width:1.5em;height:1.5em;border-radius:50%;background:var(--ink);color:#fff;
+       font-size:.72em;align-items:center;justify-content:center;margin-inline-end:8px;font-weight:900}
+  .sub{font-size:.62em;font-weight:700;color:var(--muted);margin-top:3px}
+  .cust{color:var(--red)}
+  .sec{border-top:4px solid var(--ink);margin-top:14px;padding-top:10px}
+  .sec .ttl{font-size:14px;font-weight:900;color:var(--muted);margin:0 0 8px}
+  .sec .ttl b{color:var(--ink);font-size:15px}
+  .pay{border:5px solid var(--red);border-radius:14px;padding:12px;margin-top:10px;background:#FFF7F7}
+  .pay .zh{font-size:clamp(20px,5vw,26px);font-weight:900}
+  .pay .time{font-size:clamp(46px,15vw,84px);font-weight:900;line-height:1.05;letter-spacing:.02em;
+             font-variant-numeric:tabular-nums}
+  .pay .loc{font-size:clamp(15px,3.8vw,18px);font-weight:800;color:#8A0011}
+  .btns{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
+  .btn{display:flex;align-items:center;gap:10px;width:100%;min-height:60px;padding:10px 14px;border-radius:12px;
+       border:3px solid var(--ink);background:#fff;color:var(--ink);font-family:inherit;cursor:pointer;text-align:start}
+  .btn .bi{font-size:21px}
+  .btn .bl{flex:1 1 auto;display:grid;gap:1px}
+  .btn .bzh{font-size:17px;font-weight:900;line-height:1.2}
+  .btn .bloc{font-size:13px;font-weight:700;color:var(--muted);line-height:1.2}
+  .btn.primary{background:var(--red);border-color:var(--red);color:#fff}
+  .btn.primary .bloc{color:#FFE9E9}
+  /* App 拟态：顶部状态 + 底部三按钮 */
+  .appmock{border:4px solid var(--ink);border-radius:14px;padding:10px;margin-top:8px;background:#FAFAFA}
+  .appmock .astatus{font-size:clamp(20px,5vw,26px);font-weight:900;text-align:center;padding:6px 4px}
+  .appmock .astatus .al{display:block;font-size:13px;font-weight:800;color:var(--muted);margin-top:2px}
+  .apills{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:4px}
+  .pill{border-radius:999px;padding:9px 6px;text-align:center;border:3px solid var(--ink);background:#fff}
+  .pill .pzh{display:block;font-size:clamp(12px,3.2vw,15px);font-weight:900;line-height:1.2}
+  .pill .ploc{display:block;font-size:clamp(10px,2.6vw,12px);font-weight:700;color:var(--muted);margin-top:2px;line-height:1.2}
+  .pill .pos{display:block;font-size:10px;font-weight:700;color:#8A0011;margin-top:4px;line-height:1.2}
+  .pill.yellow{background:var(--yellow)}
+  .pill.yellow .ploc{color:#5A4300}
+  .hint{margin-top:8px;font-size:15px;font-weight:800;line-height:1.45;color:#8A0011}
+  .foot{margin-top:12px;font-size:12px;color:var(--muted);text-align:center}
+  .warn{background:#FFF1F1;border:3px solid var(--red);color:#8A0011;border-radius:12px;padding:10px 12px;
+        margin-top:10px;font-size:15px;font-weight:800}
+  @media print{.warn,.btns{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="card" id="app"></div></div>
+<script id="card-data" type="application/json">{
+ "kind": "payment",
+ "lang": "ru",
+ "dir": "ltr",
+ "generatedAt": "2026-10-24 21:46",
+ "isSample": true,
+ "store": {
+  "zh": "麦当劳济南山大路(成大高科)餐厅",
+  "pinyin": "Mài dāng láo Jǐ nán Shān dà lù (Chéng dà gāo kē) cān tīng",
+  "local": "McDonald's Shanda Road"
+ },
+ "howto": {
+  "zh": "您好，这是我要点的餐，请看每一格的中文。",
+  "local": "Покажите экран сотруднику; на какую строку он покажет — ту и смотрите."
+ },
+ "items": [
+  {
+   "n": "①",
+   "zh": "麦辣鸡腿汉堡三件套",
+   "local": "Набор с острым куриным бургером",
+   "qty": 1,
+   "combosZh": "麦辣鸡腿汉堡＋中薯条＋可乐中杯",
+   "combosLocal": "Острый куриный бургер · Картофель фри (сред.) · Кола (сред.)",
+   "customs": [
+    {
+     "zh": "不要切块生菜",
+     "local": "без салата"
+    },
+    {
+     "zh": "可乐去冰",
+     "local": "кола без льда"
+    }
+   ]
+  }
+ ],
+ "facts": [
+  {
+   "icon": "🛍️",
+   "zh": "外带",
+   "local": "С собой"
+  },
+  {
+   "icon": "💳",
+   "zh": "微信支付",
+   "local": "WeChat Pay"
+  }
+ ],
+ "price": {
+  "zhLabel": "参考价格",
+  "amount": "¥33.50",
+  "local": "Ориентировочно ¥33.50",
+  "note": "Итоговую цену определяет касса.",
+  "saved": "",
+  "coupons": ""
+ },
+ "status": {
+  "zh": "待支付",
+  "local": "Ожидает оплаты"
+ },
+ "appStatus": {
+  "zh": "待支付",
+  "local": "Ожидает оплаты"
+ },
+ "deadline": {
+  "hhmm": "19:13",
+  "zh": "请在 19:13 前付款",
+  "local": "Оплатите до 19:13"
+ },
+ "pickup": {
+  "code": "",
+  "zh": "取餐码",
+  "local": "НОМЕР ПОЛУЧЕНИЯ"
+ },
+ "payUrl": "https://example.invalid/pay?orderId=REDACTED",
+ "paySteps": [
+  {
+   "zh": "打开麦当劳 App，在我的订单里点右下角黄色的「去支付」",
+   "local": "Откройте приложение McDonald's → заказ → жёлтая кнопка «去支付» справа внизу"
+  },
+  {
+   "zh": "付款成功后回到对话里告诉我",
+   "local": "Напишите мне после оплаты"
+  }
+ ],
+ "steps": [
+  {
+   "zh": "打开麦当劳 App 订单页",
+   "local": "Откройте приложение McDonald's и найдите заказ"
+  },
+  {
+   "zh": "看到「请取餐」就去取餐台",
+   "local": "Когда появится 请取餐, подойдите к стойке выдачи"
+  },
+  {
+   "zh": "把这张卡给店员看",
+   "local": "Покажите эту карточку — номер прочитает сотрудник"
+  }
+ ],
+ "appVocab": [
+  {
+   "zh": "取消订单",
+   "local": "Отменить",
+   "style": "outline",
+   "pos": "1-я слева"
+  },
+  {
+   "zh": "联系客服",
+   "local": "Поддержка",
+   "style": "outline",
+   "pos": "по центру"
+  },
+  {
+   "zh": "去支付",
+   "local": "Оплатить",
+   "style": "yellow",
+   "pos": "справа, жёлтая"
+  }
+ ],
+ "statusRows": [
+  {
+   "zh": "待支付",
+   "local": "Ожидает оплаты",
+   "action": "",
+   "hot": false
+  },
+  {
+   "zh": "配餐中",
+   "local": "Готовится",
+   "action": "",
+   "hot": false
+  },
+  {
+   "zh": "请取餐",
+   "local": "Готово — заберите",
+   "action": "",
+   "hot": true
+  },
+  {
+   "zh": "订单已完成",
+   "local": "Выполнен",
+   "action": "",
+   "hot": false
+  }
+ ],
+ "qaStaff": [
+  {
+   "q": {
+    "zh": "请去自助机点餐",
+    "local": "Заказывайте в терминале"
+   },
+   "answers": [
+    {
+     "zh": "我不太会用自助机，麻烦您帮我在柜台点好吗？谢谢～",
+     "local": "Я не умею пользоваться терминалом — оформите, пожалуйста, здесь."
+    }
+   ]
+  },
+  {
+   "q": {
+    "zh": "堂食还是外带？",
+    "local": "Здесь или с собой?"
+   },
+   "answers": [
+    {
+     "zh": "堂食，谢谢～",
+     "local": "В зале, пожалуйста"
+    },
+    {
+     "zh": "外带，谢谢～",
+     "local": "С собой, пожалуйста"
+    }
+   ]
+  },
+  {
+   "q": {
+    "zh": "要加大的吗？",
+    "local": "Увеличить порцию?"
+   },
+   "answers": [
+    {
+     "zh": "不用了，谢谢～",
+     "local": "Нет, спасибо"
+    },
+    {
+     "zh": "好的，麻烦升级大杯，谢谢～",
+     "local": "Да, побольше, пожалуйста"
+    }
+   ]
+  },
+  {
+   "q": {
+    "zh": "是会员吗？",
+    "local": "Вы участник? Есть купоны?"
+   },
+   "answers": [
+    {
+     "zh": "不是会员，谢谢～",
+     "local": "Не участник, спасибо"
+    },
+    {
+     "zh": "我用这个券，麻烦您看一下～",
+     "local": "Хочу использовать этот купон"
+    }
+   ]
+  },
+  {
+   "q": {
+    "zh": "怎么付款？",
+    "local": "Как будете платить?"
+   },
+   "answers": [
+    {
+     "zh": "微信，谢谢～",
+     "local": "WeChat Pay, пожалуйста"
+    },
+    {
+     "zh": "支付宝，谢谢～",
+     "local": "Alipay, пожалуйста"
+    },
+    {
+     "zh": "现金可以吗？",
+     "local": "Можно наличными?"
+    }
+   ]
+  },
+  {
+   "q": {
+    "zh": "还要别的吗？",
+    "local": "Что-то ещё?"
+   },
+   "answers": [
+    {
+     "zh": "就这些，谢谢～",
+     "local": "Это всё, спасибо"
+    }
+   ]
+  },
+  {
+   "q": {
+    "zh": "请稍等一下",
+    "local": "Минутку, пожалуйста"
+   },
+   "answers": [
+    {
+     "zh": "好的，谢谢～",
+     "local": "Хорошо, спасибо"
+    }
+   ]
+  }
+ ],
+ "sayCustomer": [
+  {
+   "zh": "麻烦给我几张纸巾，谢谢～",
+   "local": "Дайте, пожалуйста, салфетки"
+  },
+  {
+   "zh": "麻烦给我两包番茄酱，谢谢～",
+   "local": "Два пакетика кетчупа, пожалуйста"
+  },
+  {
+   "zh": "不好意思，我的餐好像少了一样，麻烦您帮我看看，谢谢～",
+   "local": "Кажется, одного блюда не хватает"
+  },
+  {
+   "zh": "不好意思，这个好像不是我点的，麻烦您帮我确认一下，谢谢～",
+   "local": "Кажется, это не мой заказ"
+  },
+  {
+   "zh": "太感谢您了，麻烦您了！",
+   "local": "Большое спасибо!"
+  }
+ ],
+ "sec": {
+  "order": "мой заказ",
+  "facts": "как и оплата",
+  "dlg": "нажмите строку и покажите экран",
+  "staffAsk": "персонал может спросить",
+  "custSay": "я хочу сказать",
+  "status": "статус заказа",
+  "app": "в приложении",
+  "steps": "как получить",
+  "pay": "как оплатить"
+ },
+ "staffLine": {
+  "zh": "您好！我在手机上点好了，取餐码是 {code}，谢谢！",
+  "local": "Вот мой заказ, номер получения"
+ },
+ "ui": {
+  "speak": "Прочитать по-китайски",
+  "back": "Назад",
+  "stale": "Карточке больше 30 минут — проверьте заказ заново.",
+  "sampleTag": "ПРИМЕР",
+  "sampleNote": "Пример данных, не реальный заказ.",
+  "locked": "Номер появится только после оплаты.",
+  "payNow": "Оплатить",
+  "payInApp": "оплата в приложении",
+  "tapYellow": "Нажмите жёлтую кнопку «去支付» справа внизу в приложении.",
+  "payLink": "Запасной вариант: ссылка",
+  "noSpeech": "—"
+ },
+ "zhui": {
+  "back": "返回"
+ }
+}</script>
+<script>
+(function(){
+  var D=JSON.parse(document.getElementById('card-data').textContent);
+  var U=D.ui||{}, app=document.getElementById('app');
+  function esc(s){return String(s==null?'':s).replace(/\*\*/g,'').replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function cell(zhHtml,local,cls){
+    return '<div class="row '+(cls||'')+'"><div class="zh">'+zhHtml+'</div>'+
+      '<div class="loc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(local)+'</div></div>';
+  }
+  function sec(t, inner){return '<div class="sec"><div class="ttl">'+t+'</div>'+inner+'</div>';}
+
+  var h='<div class="hd"><div class="logo">M</div><div class="st">'+esc(D.store.zh)+
+        '<i>'+esc(D.store.pinyin)+'</i></div></div>';
+  var gen=Date.parse(String(D.generatedAt||'').replace(' ','T'));
+  if(!isNaN(gen)&&(Date.now()-gen)/60000>=30){h+='<div class="warn">⚠️ '+esc(U.stale)+'</div>';}
+  h+=cell(esc(D.howto.zh),D.howto.local);
+  h+='<div class="pay"><div class="zh">'+esc(D.deadline.zh)+'</div>'+
+     '<div class="time">'+esc(D.deadline.hhmm)+'</div>'+
+     '<div class="loc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(D.deadline.local)+'</div>'+
+     '<div class="loc" lang="'+D.lang+'" dir="'+D.dir+'" style="margin-top:6px">'+esc(U.locked)+'</div></div>';
+  if(D.appStatus){
+    var am='<div class="appmock"><div class="astatus">'+esc(D.appStatus.zh)+
+      '<span class="al" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(D.appStatus.local)+'</span></div><div class="apills">';
+    (D.appVocab||[]).forEach(function(v){
+      am+='<div class="pill '+(v.style||'outline')+'"><span class="pzh">'+esc(v.zh)+'</span>'+
+          '<span class="ploc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(v.local)+'</span>'+
+          '<span class="pos" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(v.pos)+'</span></div>';
+    });
+    am+='</div></div>';
+    h+='<div class="sec"><div class="ttl"><b>首选：在 App 里付款</b> · '+esc(U.payInApp)+'</div>'+am+
+       '<div class="hint">👆 '+esc(U.tapYellow)+'</div></div>';
+  }
+  app.innerHTML=h;
+
+  var inner='';
+  (D.items||[]).forEach(function(it){
+    inner+=cell('<span class="num">'+esc(it.n)+'</span>'+esc(it.zh)+' <span class="sub">×'+esc(it.qty)+'</span>'+
+      (it.combosZh?'<div class="sub">'+esc(it.combosZh)+'</div>':''), it.local, '');
+    (it.customs||[]).forEach(function(c){
+      inner+=cell('<span class="num">'+esc(it.n)+'</span><span class="cust">'+esc(c.zh)+'</span>', c.local, '');
+    });
+  });
+  app.insertAdjacentHTML('beforeend', sec('<b>我要点的餐</b> · '+esc(D.sec.order), inner));
+  app.insertAdjacentHTML('beforeend', sec('<b>就餐与付款</b> · '+esc(D.sec.facts),
+    (D.facts||[]).map(function(f){return cell('<span>'+esc(f.icon)+' </span>'+esc(f.zh), f.local,'');}).join('')));
+  if(D.price){
+    app.insertAdjacentHTML('beforeend',
+      '<div class="row" style="border-bottom:0"><div class="zh">'+esc(D.price.zhLabel)+' '+esc(D.price.amount)+'</div>'+
+      '<div class="loc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(D.price.local)+'</div></div>');
+  }
+
+  var st=sec('<b>怎么付款</b> · '+esc(D.sec.pay),
+    (D.paySteps||[]).map(function(s,i){
+      return cell('<span class="num">'+(i+1)+'</span>'+esc(s.zh), s.local, '');
+    }).join(''));
+  app.insertAdjacentHTML('beforeend', st);
+
+  var bb=document.createElement('div'); bb.className='btns';
+  var a=document.createElement('a'); a.className='btn primary'; a.href=D.payUrl||'#';
+  a.style.textDecoration='none';
+  a.innerHTML='<span class="bi">🔗</span><div class="bl"><span class="bzh">备用：支付链接</span>'+
+    '<span class="bloc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(U.payLink)+'</span></div>';
+  bb.appendChild(a);
+  var b=document.createElement('button'); b.className='btn';
+  b.innerHTML='<span class="bi">🔊</span><div class="bl"><span class="bzh">朗读</span>'+
+    '<span class="bloc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(U.speak)+'</span></div>';
+  b.onclick=function(){
+    if(!('speechSynthesis' in window))return;
+    var t=[D.deadline.zh,D.howto.zh].join('。')+'。';
+    (D.items||[]).forEach(function(it){t+=it.zh+'，'+it.qty+'份。';});
+    (D.items||[]).forEach(function(it){(it.customs||[]).forEach(function(c){t+=c.zh+'。';});});
+    try{window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);
+        u.lang='zh-CN';u.rate=0.8;window.speechSynthesis.speak(u);}catch(e){}
+  };
+  bb.appendChild(b); app.appendChild(bb);
+
+  var f=document.createElement('div'); f.className='foot';
+  f.innerHTML=(D.isSample?esc(U.sampleNote)+' · ':'')+'🕒 '+esc(D.generatedAt)+' · mcspeak';
+  app.appendChild(f);
+  document.documentElement.setAttribute('lang',D.lang||'en');
+})();
+</script>
+</body>
+</html>

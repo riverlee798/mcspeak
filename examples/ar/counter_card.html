@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<title>mcspeak · counter card</title>
+<style>
+  :root{--red:#D0021B;--yellow:#FFC72C;--ink:#0B0B0B;--muted:#525252;--line:#DDD;
+        --ok:#0B6B2F;--soft:#FFF6DA;--page:#ECECEC;--bg:#fff;
+        --font:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB",
+               "Microsoft YaHei","Noto Sans CJK SC","Noto Sans SC","Source Han Sans SC",
+               "Noto Sans Arabic","Noto Sans Thai","Noto Sans Devanagari",Tahoma,Arial,sans-serif;}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--page);color:var(--ink);font-family:var(--font)}
+  body{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  .wrap{max-width:1000px;margin:0 auto;padding:10px}
+  .card{background:var(--bg);border-radius:16px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.10)}
+  .hd{display:flex;gap:10px;align-items:center;border-bottom:4px solid var(--ink);padding-bottom:10px}
+  .hd .logo{width:42px;height:42px;border-radius:10px;background:var(--red);color:#fff;
+            display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900}
+  .hd .st{font-size:15px;font-weight:900;line-height:1.25}
+  .hd .st i{display:block;font-size:12px;color:var(--muted);font-style:normal;font-weight:700;margin-top:2px}
+
+  /* 顶部双语用法说明 */
+  .howto{border:3px solid var(--ink);border-radius:12px;margin:10px 0 4px;overflow:hidden}
+  .howto .row{padding:10px 12px;border-bottom:0}
+
+  /* 一个格子 = 一件事，中文在上、用户语言在下；横屏自动两栏严格对齐 */
+  .row{display:grid;grid-template-columns:1fr;gap:3px;padding:11px 0;border-bottom:2px solid var(--line);
+       align-items:start;direction:ltr}
+  .row .zh{font-size:clamp(21px,5.4vw,29px);font-weight:900;line-height:1.32;letter-spacing:.2px}
+  .row .loc{font-size:clamp(14px,3.5vw,17px);font-weight:700;line-height:1.42;color:var(--muted)}
+  .row .loc[dir="rtl"]{text-align:right}
+  @media (min-width:640px) and (orientation:landscape){
+    .row{grid-template-columns:1fr 1fr;gap:20px}
+    .row .zh{padding-inline-end:18px;border-inline-end:3px solid var(--line)}
+  }
+  .num{display:inline-flex;width:1.5em;height:1.5em;border-radius:50%;background:var(--ink);color:#fff;
+       font-size:.72em;align-items:center;justify-content:center;margin-inline-end:8px;vertical-align:.12em;font-weight:900}
+  .ico{font-size:1.05em;margin-inline-end:8px}
+  .sub{font-size:.62em;font-weight:700;color:var(--muted);margin-top:3px}
+  .cust{color:var(--red)}
+  .row.reading{background:#FFF3C4;box-shadow:inset 0 0 0 3px var(--yellow);border-radius:8px}
+  .sec{border-top:4px solid var(--ink);margin-top:14px;padding-top:10px}
+  .sec .ttl{font-size:14px;font-weight:900;letter-spacing:.4px;color:var(--muted);margin:0 0 8px}
+  .sec .ttl b{color:var(--ink);font-size:15px}
+
+  /* 价格块 */
+  .price{display:grid;grid-template-columns:1fr;gap:3px;padding:12px;border:4px solid var(--ink);border-radius:12px;margin-top:10px}
+  .price .zh{font-size:clamp(24px,6.4vw,34px);font-weight:900}
+  .price .loc{font-size:15px;font-weight:800;color:var(--muted)}
+
+  /* 按钮：一律双语 */
+  .btns{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
+  @media(min-width:680px){.btns{grid-template-columns:1fr 1fr}}
+  .btn{display:flex;align-items:center;gap:10px;width:100%;min-height:58px;padding:10px 14px;border-radius:12px;
+       border:3px solid var(--ink);background:#fff;color:var(--ink);font-family:inherit;cursor:pointer;text-align:start}
+  .btn .bi{font-size:21px;flex:0 0 auto}
+  .btn .bl{flex:1 1 auto;display:grid;gap:1px}
+  .btn .bzh{font-size:17px;font-weight:900;line-height:1.2}
+  .btn .bloc{font-size:13px;font-weight:700;color:var(--muted);line-height:1.2}
+  .btn.primary{background:var(--red);border-color:var(--red);color:#fff}
+  .btn.primary .bloc{color:#FFE9E9}
+  .btn.yellow{background:var(--yellow)}
+  .btn:active{transform:translateY(1px)}
+
+  /* 对话板 */
+  .dlg{margin-top:6px}
+  .dlg .grid{display:grid;grid-template-columns:1fr;gap:8px}
+  @media(min-width:680px){.dlg .grid{grid-template-columns:1fr 1fr}}
+  .dlg .btn{min-height:64px}
+
+  /* 全屏 */
+  .ov{position:fixed;inset:0;background:#fff;z-index:99;display:none;flex-direction:column;padding:14px;overflow:auto}
+  .ov.on{display:flex}
+  .ov .bignum{font-size:clamp(30px,9vw,54px);font-weight:900;line-height:1.25;margin:18px 0 6px}
+  .ov .bignum[dir="rtl"]{text-align:right}
+  .ov .smallzh{font-size:clamp(17px,4.4vw,21px);font-weight:800;color:var(--muted);line-height:1.4}
+  .ov .answers{display:grid;gap:10px;margin-top:16px}
+  .ov .btn{min-height:66px}
+  .foot{margin-top:12px;font-size:12px;color:var(--muted);text-align:center;line-height:1.5}
+  .warn{background:#FFF1F1;border:3px solid var(--red);color:#8A0011;border-radius:12px;padding:10px 12px;
+        margin-top:10px;font-size:15px;font-weight:800;line-height:1.4}
+  @media print{body{background:#fff}.btns,.dlg,.ov{display:none!important}.card{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="card" id="app"></div></div>
+<div class="ov" id="ov"><div id="ovBody"></div></div>
+<script id="card-data" type="application/json">{
+ "kind": "counter",
+ "lang": "ar",
+ "dir": "rtl",
+ "generatedAt": "2026-10-24 21:46",
+ "isSample": true,
+ "store": {
+  "zh": "麦当劳济南山大路(成大高科)餐厅",
+  "pinyin": "Mài dāng láo Jǐ nán Shān dà lù (Chéng dà gāo kē) cān tīng",
+  "local": "McDonald's Shanda Road"
+ },
+ "howto": {
+  "zh": "您好，这是我要点的餐，请看每一格的中文。",
+  "local": "اعرض الشاشة على الموظف؛ أي صف يشير إليه، انظر إليه."
+ },
+ "items": [
+  {
+   "n": "①",
+   "zh": "麦辣鸡腿汉堡三件套",
+   "local": "وجبة برغر الدجاج الحار",
+   "qty": 1,
+   "combosZh": "麦辣鸡腿汉堡＋中薯条＋可乐中杯",
+   "combosLocal": "برغر الدجاج الحار · بطاطس (وسط) · كولا (وسط)",
+   "customs": [
+    {
+     "zh": "不要切块生菜",
+     "local": "بدون خس"
+    },
+    {
+     "zh": "可乐去冰",
+     "local": "كولا بدون ثلج"
+    }
+   ]
+  }
+ ],
+ "facts": [
+  {
+   "icon": "🛍️",
+   "zh": "外带",
+   "local": "طلب خارجي"
+  },
+  {
+   "icon": "💳",
+   "zh": "微信支付",
+   "local": "WeChat Pay"
+  }
+ ],
+ "price": {
+  "zhLabel": "参考价格",
+  "amount": "¥33.50",
+  "local": "السعر التقريبي ¥33.50",
+  "note": "السعر النهائي في الكاشير.",
+  "saved": "",
+  "coupons": ""
+ },
+ "status": {
+  "zh": "待支付",
+  "local": "بانتظار الدفع"
+ },
+ "appStatus": {
+  "zh": "待支付",
+  "local": "بانتظار الدفع"
+ },
+ "deadline": {
+  "hhmm": "19:13",
+  "zh": "请在 19:13 前付款",
+  "local": "يرجى الدفع قبل 19:13"
+ },
+ "pickup": {
+  "code": "",
+  "zh": "取餐码",
+  "local": "رقم الاستلام"
+ },
+ "payUrl": "https://example.invalid/pay?orderId=REDACTED",
+ "paySteps": [
+  {
+   "zh": "打开麦当劳 App，在我的订单里点右下角黄色的「去支付」",
+   "local": "افتح تطبيق ماكدونالدز → الطلب → اضغط الزر الأصفر «去支付» أسفل اليمين"
+  },
+  {
+   "zh": "付款成功后回到对话里告诉我",
+   "local": "أخبرني بعد الدفع"
+  }
+ ],
+ "steps": [
+  {
+   "zh": "打开麦当劳 App 订单页",
+   "local": "افتح تطبيق ماكدونالدز واطلب الطلب"
+  },
+  {
+   "zh": "看到「请取餐」就去取餐台",
+   "local": "عند ظهور 请取餐 توجّه إلى كاونتر الاستلام"
+  },
+  {
+   "zh": "把这张卡给店员看",
+   "local": "اعرض هذه البطاقة — سيقرأ الموظف الرقم"
+  }
+ ],
+ "appVocab": [
+  {
+   "zh": "取消订单",
+   "local": "إلغاء",
+   "style": "outline",
+   "pos": "الأول من اليسار"
+  },
+  {
+   "zh": "联系客服",
+   "local": "الدعم",
+   "style": "outline",
+   "pos": "الوسط"
+  },
+  {
+   "zh": "去支付",
+   "local": "ادفع",
+   "style": "yellow",
+   "pos": "اليمين، أصفر"
+  }
+ ],
+ "statusRows": [
+  {
+   "zh": "待支付",
+   "local": "بانتظار الدفع",
+   "action": "",
+   "hot": false
+  },
+  {
+   "zh": "配餐中",
+   "local": "قيد التحضير",
+   "action": "",
+   "hot": false
+  },
+  {
+   "zh": "请取餐",
+   "local": "جاهز — استلم",
+   "action": "",
+   "hot": true
+  },
+  {
+   "zh": "订单已完成",
+   "local": "مكتمل",
+   "action": "",
+   "hot": false
+  }
+ ],
+ "qaStaff": [
+  {
+   "q": {
+    "zh": "请去自助机点餐",
+    "local": "اطلب من الجهاز الذاتي"
+   },
+   "answers": [
+    {
+     "zh": "我不太会用自助机，麻烦您帮我在柜台点好吗？谢谢～",
+     "local": "لا أستطيع استخدام الجهاز — هل يمكنك تسجيل طلبي هنا؟"
+    }
+   ]
+  },
+  {
+   "q": {
+    "zh": "堂食还是外带？",
+    "local": "داخل المطعم أم خارجي؟"
+   },
+   "answers": [
+    {
+     "zh": "堂食，谢谢～",
+     "local": "داخل المطعم"
+    },
+    {
+     "zh": "外带，谢谢～",
+     "local": "طلب خارجي"
+    }
+   ]
+  },
+  {
+   "q": {
+    "zh": "要加大的吗？",
+    "local": "هل تريد حجمًا أكبر؟"
+   },
+   "answers": [
+    {
+     "zh": "不用了，谢谢～",
+     "local": "لا، شكرًا"
+    },
+    {
+     "zh": "好的，麻烦升级大杯，谢谢～",
+     "local": "نعم، حجم أكبر"
+    }
+   ]
+  },
+  {
+   "q": {
+    "zh": "是会员吗？",
+    "local": "هل أنت عضو؟ لديك قسائم؟"
+   },
+   "answers": [
+    {
+     "zh": "不是会员，谢谢～",
+     "local": "لست عضوًا"
+    },
+    {
+     "zh": "我用这个券，麻烦您看一下～",
+     "local": "أريد استخدام هذه القسيمة"
+    }
+   ]
+  },
+  {
+   "q": {
+    "zh": "怎么付款？",
+    "local": "كيف ستدفع؟"
+   },
+   "answers": [
+    {
+     "zh": "微信，谢谢～",
+     "local": "WeChat Pay"
+    },
+    {
+     "zh": "支付宝，谢谢～",
+     "local": "Alipay"
+    },
+    {
+     "zh": "现金可以吗？",
+     "local": "هل يمكن الدفع نقدًا؟"
+    }
+   ]
+  },
+  {
+   "q": {
+    "zh": "还要别的吗？",
+    "local": "هل تريد شيئًا آخر؟"
+   },
+   "answers": [
+    {
+     "zh": "就这些，谢谢～",
+     "local": "هذا كل شيء"
+    }
+   ]
+  },
+  {
+   "q": {
+    "zh": "请稍等一下",
+    "local": "لحظة من فضلك"
+   },
+   "answers": [
+    {
+     "zh": "好的，谢谢～",
+     "local": "حسنًا، شكرًا"
+    }
+   ]
+  }
+ ],
+ "sayCustomer": [
+  {
+   "zh": "麻烦给我几张纸巾，谢谢～",
+   "local": "أريد مناديل، لو سمحت"
+  },
+  {
+   "zh": "麻烦给我两包番茄酱，谢谢～",
+   "local": "أريد كيسين كاتشاب، لو سمحت"
+  },
+  {
+   "zh": "不好意思，我的餐好像少了一样，麻烦您帮我看看，谢谢～",
+   "local": "يبدو أن أحد الأصناف ناقص"
+  },
+  {
+   "zh": "不好意思，这个好像不是我点的，麻烦您帮我确认一下，谢谢～",
+   "local": "يبدو أن هذا ليس طلبي"
+  },
+  {
+   "zh": "太感谢您了，麻烦您了！",
+   "local": "شكرًا جزيلًا!"
+  }
+ ],
+ "sec": {
+  "order": "طلبي",
+  "facts": "الطعام والدفع",
+  "dlg": "اضغط صفًا ثم اعرض الشاشة",
+  "staffAsk": "قد يسأل الموظف",
+  "custSay": "أريد أن أقول",
+  "status": "حالة الطلب",
+  "app": "في التطبيق",
+  "steps": "طريقة الاستلام",
+  "pay": "طريقة الدفع"
+ },
+ "staffLine": {
+  "zh": "您好！我在手机上点好了，取餐码是 {code}，谢谢！",
+  "local": "هذا طلبي، رقم الاستلام"
+ },
+ "ui": {
+  "speak": "قراءة النص الصيني",
+  "back": "رجوع",
+  "stale": "عمر البطاقة أكثر من 30 دقيقة — تحقّق من الطلب مجددًا.",
+  "sampleTag": "نموذج",
+  "sampleNote": "بيانات تجريبية وليست طلبًا حقيقيًا.",
+  "locked": "يظهر رقم الاستلام بعد الدفع فقط.",
+  "payNow": "ادفع الآن",
+  "payInApp": "الدفع في التطبيق",
+  "tapYellow": "اضغط الزر الأصفر «去支付» أسفل يمين التطبيق.",
+  "payLink": "بديل: رابط الدفع",
+  "noSpeech": "—"
+ },
+ "zhui": {
+  "back": "返回"
+ }
+}</script>
+<script>
+(function(){
+  var D=JSON.parse(document.getElementById('card-data').textContent);
+  var U=D.ui||{}, Z=D.zhui||{}, app=document.getElementById('app');
+  var ov=document.getElementById('ov'), ovB=document.getElementById('ovBody');
+
+  function esc(s){return String(s==null?'':s).replace(/\*\*/g,'').replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function cell(zhHtml, local, readText, cls){          // 一个格子：中文在上，用户语言在下
+    return '<div class="row '+(cls||'')+'" data-read="'+esc(readText||'')+'">'+
+      '<div class="zh">'+zhHtml+'</div>'+
+      '<div class="loc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(local)+'</div></div>';
+  }
+  function row(o,cls){ return cell(esc(o.zh), o.local, o.zh, cls); }
+  function sec(titleZh,titleLoc,inner){
+    return '<div class="sec"><div class="ttl"><b>'+esc(titleZh)+'</b> · '+esc(titleLoc)+'</div>'+inner+'</div>';
+  }
+  function btn(o,cls,fn,icon){
+    var b=document.createElement('button');
+    b.className='btn '+(cls||'');
+    b.innerHTML='<span class="bi">'+(icon||'')+'</span><div class="bl">'+
+      '<span class="bzh">'+esc(o.zh)+'</span>'+
+      '<span class="bloc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(o.local)+'</span></div>';
+    b.onclick=fn; return b;
+  }
+
+  /* ---------- header + 超时提醒 ---------- */
+  var h='<div class="hd"><div class="logo">M</div><div class="st">'+esc(D.store.zh)+
+        '<i>'+esc(D.store.pinyin)+'</i></div></div>';
+  var gen=Date.parse(String(D.generatedAt||'').replace(' ','T'));
+  if(!isNaN(gen)&&(Date.now()-gen)/60000>=30){
+    h+='<div class="warn">⚠️ '+esc(U.stale)+'</div>';
+  }
+  /* ---------- 双语用法说明 ---------- */
+  h+='<div class="howto">'+row(D.howto)+'</div>';
+  app.innerHTML=h;
+
+  /* ---------- 餐品（①②③）+ 定制（各占一格） ---------- */
+  var inner='';
+  (D.items||[]).forEach(function(it){
+    inner+=cell('<span class="num">'+esc(it.n)+'</span>'+esc(it.zh)+
+                ' <span class="sub">×'+esc(it.qty)+'</span>'+
+                (it.combosZh?'<div class="sub">'+esc(it.combosZh)+'</div>':''),
+                it.local+(it.combosLocal?'  ·  '+it.combosLocal:''), it.zh, '');
+    (it.customs||[]).forEach(function(c){
+      inner+=cell('<span class="num">'+esc(it.n)+'</span><span class="cust">'+esc(c.zh)+'</span>',
+                  c.local, c.zh, '');
+    });
+  });
+  app.insertAdjacentHTML('beforeend',sec('我要点的餐',D.sec.order,inner));
+
+  /* ---------- 就餐方式 / 付款 ---------- */
+  app.insertAdjacentHTML('beforeend',sec('就餐与付款',D.sec.facts,
+    (D.facts||[]).map(function(f){
+      return cell('<span class="ico">'+esc(f.icon)+'</span>'+esc(f.zh), f.local, f.zh, '');
+    }).join('')));
+
+  /* ---------- 价格 ---------- */
+  if(D.price){
+    app.insertAdjacentHTML('beforeend',
+      '<div class="price"><div class="zh">'+esc(D.price.zhLabel)+' '+esc(D.price.amount)+'</div>'+
+      '<div class="loc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(D.price.local)+'</div>'+
+      '<div class="loc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(D.price.note)+'</div></div>');
+  }
+
+  /* ---------- 朗读（逐格高亮） ---------- */
+  var bb=document.createElement('div'); bb.className='btns';
+  var sp=document.createElement('button'); sp.className='btn primary';
+  sp.innerHTML='<span class="bi">🔊</span><div class="bl"><span class="bzh">朗读</span>'+
+    '<span class="bloc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(U.speak)+'</span></div>';
+  sp.onclick=function(){
+    if(!('speechSynthesis' in window)){alert(U.noSpeech);return;}
+    window.speechSynthesis.cancel();
+    var rows=[].slice.call(document.querySelectorAll('[data-read]'));
+    var i=0;
+    (function next(){
+      if(i>=rows.length){return;}
+      var el=rows[i++], txt=el.getAttribute('data-read');
+      rows.forEach(function(r){r.classList.remove('reading');});
+      el.classList.add('reading');
+      try{el.scrollIntoView({block:'center',behavior:'smooth'});}catch(e){}
+      var u=new SpeechSynthesisUtterance(txt);
+      u.lang='zh-CN'; u.rate=0.8;
+      u.onend=next; u.onerror=next;
+      window.speechSynthesis.speak(u);
+    })();
+  };
+  bb.appendChild(sp); app.appendChild(bb);
+
+  /* ---------- 双向对话板 ---------- */
+  var dlg=document.createElement('div'); dlg.className='dlg';
+  var t1=document.createElement('div'); t1.className='ttl';
+  t1.innerHTML='<b>店员想问顾客</b> · '+esc(D.sec.staffAsk);
+  var g1=document.createElement('div'); g1.className='grid';
+  (D.qaStaff||[]).forEach(function(q){
+    g1.appendChild(btn({zh:q.q.zh,local:q.q.local},'yellow',function(){
+      openStaff(q);
+    },'💬'));
+  });
+  var t2=document.createElement('div'); t2.className='ttl';
+  t2.style.marginTop='14px';
+  t2.innerHTML='<b>顾客想说</b> · '+esc(D.sec.custSay);
+  var g2=document.createElement('div'); g2.className='grid';
+  (D.sayCustomer||[]).forEach(function(s){
+    g2.appendChild(btn(s,'',function(){
+      openSay(s);
+    },'🗣️'));
+  });
+  dlg.appendChild(t1); dlg.appendChild(g1); dlg.appendChild(t2); dlg.appendChild(g2);
+  var secDlg=document.createElement('div'); secDlg.className='sec';
+  secDlg.innerHTML='<div class="ttl"><b>对话板</b> · '+esc(D.sec.dlg)+'</div>';
+  secDlg.appendChild(dlg);
+  app.appendChild(secDlg);
+
+  /* ---------- 全屏页 ---------- */
+  function backBtn(){
+    var b=document.createElement('button'); b.className='btn';
+    b.innerHTML='<span class="bi">‹</span><div class="bl"><span class="bzh">'+esc(Z.back||'返回')+
+      '</span><span class="bloc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(U.back)+'</span></div>';
+    b.onclick=function(){ov.classList.remove('on');document.body.style.overflow='';};
+    return b;
+  }
+  function openOv(){
+    ovB.innerHTML=''; ov.classList.add('on'); document.body.style.overflow='hidden'; return ovB;
+  }
+  function openStaff(q){
+    var b=openOv();
+    b.insertAdjacentHTML('beforeend',
+      '<div class="bignum" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(q.q.local)+'</div>'+
+      '<div class="smallzh" lang="zh-CN" dir="ltr">'+esc(q.q.zh)+'</div>'+
+      '<div class="answers" id="ans"></div>');
+    var box=b.querySelector('#ans');
+    (q.answers||[]).forEach(function(a){
+      box.appendChild(btn(a,'yellow',function(){
+        // 客人选了这个回答 → 全屏给店员看中文大字
+        var c=openOv();
+        c.insertAdjacentHTML('beforeend',
+          '<div class="bignum" lang="zh-CN" dir="ltr">'+esc(a.zh)+'</div>'+
+          '<div class="smallzh" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(a.local)+'</div>');
+        c.appendChild(backBtn());
+      },'✅'));
+    });
+    b.appendChild(backBtn());
+  }
+  function openSay(s){
+    var b=openOv();
+    b.insertAdjacentHTML('beforeend',
+      '<div class="bignum" lang="zh-CN" dir="ltr">'+esc(s.zh)+'</div>'+
+      '<div class="smallzh" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(s.local)+'</div>');
+    b.appendChild(backBtn());
+  }
+
+  /* ---------- footer ---------- */
+  var f=document.createElement('div'); f.className='foot';
+  f.innerHTML=(D.isSample?esc(U.sampleNote)+' · ':'')+'🕒 '+esc(D.generatedAt)+' · mcspeak';
+  app.appendChild(f);
+  document.documentElement.setAttribute('lang',D.lang||'en');
+})();
+</script>
+</body>
+</html>

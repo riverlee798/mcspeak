@@ -1,0 +1,68 @@
+{
+  "_meta": {
+    "step": "已完成订单详情（历史订单，只读，未做任何修改/取消）",
+    "datetime": "2026-10-24 19:14:38",
+    "orderId": "1030000000000000000000000001",
+    "createTime": "2026-05-24 13:13:23",
+    "key_findings": [
+      "已完成：orderStatus='订单已完成' + status='40'",
+      "pickupCode 有值 = '35214'（5 位数字）→ 取餐码确实在支付/完成后才有值",
+      "takeWay='堂食'（与本轮外带单对照，说明 takeWay 存的是中文文字）",
+      "订单里可以混入非餐品行：『麦金卡月卡（30天）』price=19，comboItemList=[]",
+      "totalAmount=85 是原价合计，realTotalAmount=52.5 是实付，总优惠 32.5；券名在 couponList 里",
+      "comboItemList 的 itemName 同样带定制后缀：『咕噜咕噜橘子风味冻冻汽水 冰(少冰)』"
+    ]
+  },
+  "raw_response": {
+    "success": true,
+    "code": 200,
+    "message": "请求成功",
+    "datetime": "2026-10-24 19:14:38",
+    "traceId": "19492644ec979e8ea8da806a2c700749",
+    "data": {
+      "orderId": "1030000000000000000000000001",
+      "orderStatus": "订单已完成",
+      "status": "40",
+      "storeName": "麦当劳济南山大路(成大高科)餐厅",
+      "storeAddress": "山大路146-6号（成大高科）一楼",
+      "orderProductList": [
+        {
+          "productName": "鱼牛汉堡四件套随心选",
+          "productImage": "https://menu-img.mcd.cn/pcm/prod/menu/20250923/product/MS_9900010110_320.gif",
+          "quantity": 1,
+          "price": "66",
+          "comboItemList": [
+            { "itemName": "培根蔬萃双层牛堡", "itemQuantity": 1 },
+            { "itemName": "中薯条", "itemQuantity": 1 },
+            { "itemName": "蜜汁BBQ风味薄皮脆汁鸡-琵琶腿", "itemQuantity": 1 },
+            { "itemName": "咕噜咕噜橘子风味冻冻汽水 冰(少冰)", "itemQuantity": 1 }
+          ]
+        },
+        {
+          "productName": "麦金卡月卡（30天）",
+          "productImage": "https://menu-img.mcd.cn/pcm/prod/menu/20250423/product/MS_513817_320_1744684441670.png",
+          "quantity": 1,
+          "price": "19",
+          "comboItemList": []
+        }
+      ],
+      "totalAmount": "85",
+      "realTotalAmount": "52.5",
+      "totalDiscountAmount": "32.5",
+      "couponList": [
+        { "couponName": "超值4件套", "discountAmount": "27.5" },
+        { "couponName": "5元到店取餐福利金", "discountAmount": "5" }
+      ],
+      "createTime": "2026-05-24 13:13:23",
+      "deliveryPrice": "0",
+      "realDeliveryPrice": "0",
+      "needTableware": false,
+      "productPrice": "85",
+      "takeWay": "堂食",
+      "pickupCode": "00000",
+      "expirePayTime": "2026-05-24 13:28:23",
+      "payId": "1110000000000000000001",
+      "remark": ""
+    }
+  }
+}

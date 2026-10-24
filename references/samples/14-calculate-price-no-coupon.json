@@ -1,0 +1,33 @@
+{
+  "_tool": "calculate-price",
+  "_call": "mcd-mcp.calculate-price({ storeCode: '3350020', orderType: 1, beType: 1, items: [{ productCode: '9900005466', quantity: 1 }] })",
+  "_captured_at": "2026-10-24 17:24:52",
+  "_note": "不带券。价格单位均为分（3700 = ¥37.00）。takeWayList 仅 2 项：eat-in 堂食 / take-in-store 外带。未返回 deliveryPrice / packingPrice / tablewarePrice / enjoyed / enjoyable / mealAssistanceList（到店自取场景不适用）。",
+  "raw_response": {
+    "success": true,
+    "code": 200,
+    "message": "请求成功",
+    "datetime": "2026-10-24 17:24:52",
+    "traceId": "fbbc8d1c89b70d6aab1dc5b7979c6bfa",
+    "data": {
+      "productOriginalPrice": 3700,
+      "productPrice": 3700,
+      "originalPrice": 3700,
+      "discount": 0,
+      "price": 3700,
+      "productList": [
+        {
+          "productCode": "9900005466",
+          "productName": "巨无霸三件套",
+          "quantity": 1,
+          "originalSubtotal": 3700,
+          "subtotal": 3700
+        }
+      ],
+      "takeWayList": [
+        { "code": "eat-in", "title": "堂食", "subtitle": "店内用餐" },
+        { "code": "take-in-store", "title": "外带", "subtitle": "店内自提" }
+      ]
+    }
+  }
+}

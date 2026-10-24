@@ -1,0 +1,94 @@
+{
+  "_meta": {
+    "step": "历史订单列表（只读；本轮新增的取消单 + 两笔 2026 年的已完成单）",
+    "datetime": "2026-10-24 19:14:32",
+    "key_findings": [
+      "order-list 只给 orderStatus 文字，【没有 status 数字码】",
+      "order-list 的 comboItemList 是【结构化】的（productCode+name+quantity），而 query-order 的 comboItemList 是拼好的中文串 itemName —— 两者结构不同，别混用",
+      "order-list 有 orderType / beType / beCode / storeCode / storeName，可直接复用做门店识别",
+      "分页用 lastId + size（本次未分页，返回 3 条）"
+    ]
+  },
+  "raw_response": {
+    "success": true,
+    "code": 200,
+    "message": "请求成功",
+    "datetime": "2026-10-24 19:14:32",
+    "traceId": "fe2685bee7843589a9330feaa32ab8a2",
+    "data": {
+      "list": [
+        {
+          "orderId": "1030000000000000000000000001",
+          "orderType": "1",
+          "createTime": "2026-10-24 18:58:45",
+          "beType": "1",
+          "beCode": "",
+          "storeCode": "3350020",
+          "storeName": "麦当劳济南山大路(成大高科)餐厅",
+          "orderStatus": "订单已取消",
+          "orderProductList": [
+            {
+              "productCode": "9900005456",
+              "productName": "麦辣鸡腿汉堡三件套",
+              "quantity": 1,
+              "comboItemList": [
+                { "productCode": "1440", "name": "麦辣鸡腿汉堡", "quantity": 1 },
+                { "productCode": "4810", "name": "中薯条", "quantity": 1 },
+                { "productCode": "3050", "name": "可乐中杯", "quantity": 1 }
+              ]
+            }
+          ],
+          "realTotalAmount": "33.5"
+        },
+        {
+          "orderId": "1030000000000000000000000001",
+          "orderType": "1",
+          "createTime": "2026-05-24 13:13:23",
+          "beType": "1",
+          "beCode": "",
+          "storeCode": "3350020",
+          "storeName": "麦当劳济南山大路(成大高科)餐厅",
+          "orderStatus": "订单已完成",
+          "orderProductList": [
+            {
+              "productCode": "9900010110",
+              "productName": "鱼牛汉堡四件套随心选",
+              "quantity": 1,
+              "comboItemList": [
+                { "productCode": "1106", "name": "培根蔬萃双层牛堡", "quantity": 1 },
+                { "productCode": "4810", "name": "中薯条", "quantity": 1 },
+                { "productCode": "520726", "name": "蜜汁BBQ风味薄皮脆汁鸡-琵琶腿", "quantity": 1 },
+                { "productCode": "521647", "name": "咕噜咕噜橘子风味冻冻汽水", "quantity": 1 }
+              ]
+            }
+          ],
+          "realTotalAmount": "52.5"
+        },
+        {
+          "orderId": "1030000000000000000000000001",
+          "orderType": "1",
+          "createTime": "2026-04-02 13:08:47",
+          "beType": "1",
+          "beCode": "",
+          "storeCode": "3350020",
+          "storeName": "麦当劳济南山大路(成大高科)餐厅",
+          "orderStatus": "订单已完成",
+          "orderProductList": [
+            {
+              "productCode": "9900013623",
+              "productName": "麦辣芝魂鸡腿汉堡四件套",
+              "quantity": 1,
+              "comboItemList": [
+                { "productCode": "521494", "name": "麦辣芝魂鸡腿汉堡", "quantity": 1 },
+                { "productCode": "1217", "name": "奥利奥麦旋风（无小卡）", "quantity": 1 },
+                { "productCode": "515106", "name": "麦乐鸡4块", "quantity": 1 },
+                { "productCode": "3110", "name": "雪碧大杯", "quantity": 1 }
+              ]
+            }
+          ],
+          "realTotalAmount": "30.9"
+        }
+      ]
+    }
+  }
+}

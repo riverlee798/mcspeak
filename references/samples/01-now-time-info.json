@@ -1,0 +1,26 @@
+{
+  "_tool": "now-time-info",
+  "_call": "mcd-mcp.now-time-info({})",
+  "_captured_at": "2026-10-24 17:22:11",
+  "_note": "标准响应信封：success / code / message / datetime / traceId / data",
+  "raw_response": {
+    "success": true,
+    "code": 200,
+    "message": "请求成功",
+    "datetime": "2026-10-24 17:22:11",
+    "traceId": "8db9ac82a55d6f68f4f4ea8fa1b5dc5f",
+    "data": {
+      "timestamp": 1792833731021,
+      "datetime": "2026-10-24T17:22:11.021",
+      "formatted": "2026-10-24 17:22:11",
+      "date": "2026-10-24",
+      "year": 2026,
+      "month": 10,
+      "day": 24,
+      "dayOfWeek": "SATURDAY",
+      "timezone": "GMT+08:00",
+      "offset": "+08:00",
+      "utc": "2026-10-24T09:22:11.021Z"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "_tool": "query-nearby-stores",
+  "_call": "mcd-mcp.query-nearby-stores({ beType: 1, searchType: 1 })",
+  "_captured_at": "2026-10-24 17:22:27",
+  "_note": "searchType=1 返回「收藏餐厅」。字段比 searchType=2 更少：缺 businessStatus / businessStartTime / businessEndTime，distance 恒为 0；返回集合中可能仅含 1 家收藏门店。",
+  "raw_response": {
+    "success": true,
+    "code": 200,
+    "message": "请求成功",
+    "datetime": "2026-10-24 17:22:27",
+    "traceId": "6567427d33c52ab59ee37a9ee819e458",
+    "data": [
+      {
+        "storeCode": "3350020",
+        "storeName": "麦当劳济南山大路(成大高科)餐厅",
+        "address": "山大路146-6号（成大高科）一楼",
+        "distance": 0,
+        "longitude": 0.0,
+        "latitude": 0.0,
+        "reservation": true,
+        "reservationTimeOptions": [
+          { "date": "2026-10-24", "today": true, "reservationOptionText": "夜市(17:14至21:45)，宵夜(22:14至23:31)" },
+          { "date": "2026-10-25", "today": false, "reservationOptionText": "早餐(05:14至10:15)，午餐(10:44至14:15)，下午茶(14:44至16:45)，夜市(17:14至21:45)，宵夜(22:14至23:31)" }
+        ]
+      }
+    ]
+  }
+}

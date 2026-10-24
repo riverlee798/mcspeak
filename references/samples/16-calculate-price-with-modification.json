@@ -1,0 +1,27 @@
+{
+  "_tool": "calculate-price",
+  "_call": "mcd-mcp.calculate-price({ storeCode: '3350020', orderType: 1, beType: 1, items: [{ productCode: '9900005466', quantity: 1, roundList: [ {round:'1', comboItemList:[{code:'1100', quantity:1, modification:{values:[{code:'100116',key:'0-1',quantity:1},{code:'100141',key:'0-0',quantity:1},{code:'100168',key:'0-1',quantity:1},{code:'100202',key:'0-1',quantity:1},{code:'100212',key:'0-0',quantity:1}]}}]}, {round:'2', comboItemList:[{code:'4810', quantity:1}]}, {round:'3', comboItemList:[{code:'3050', quantity:1, modification:{values:[{code:'200002',key:'0-1',quantity:1}]}}]} ] }] })",
+  "_captured_at": "2026-10-24 17:25:24",
+  "_note": "附加实验（超出 9 步：用于验证特调入参是否被接受）。round 传的是 rounds[].id 的字符串 \"1\"/\"2\"/\"3\"；去吉士(100141→key 0-0)、去洋葱粒(100212→key 0-0)，其余保持 0-1。结果：未报错、价格仍 3700，但所有特调均为 0 元，无法从价格差异判断特调是否真正生效 —— 需下单后在订单详情核对，本阶段不调 create-order 故留待验证。",
+  "raw_response": {
+    "success": true,
+    "code": 200,
+    "message": "请求成功",
+    "datetime": "2026-10-24 17:25:24",
+    "traceId": "d4701209ea66a6fc68a339c7a4d1d875",
+    "data": {
+      "productOriginalPrice": 3700,
+      "productPrice": 3700,
+      "originalPrice": 3700,
+      "discount": 0,
+      "price": 3700,
+      "productList": [
+        { "productCode": "9900005466", "productName": "巨无霸三件套", "quantity": 1, "originalSubtotal": 3700, "subtotal": 3700 }
+      ],
+      "takeWayList": [
+        { "code": "eat-in", "title": "堂食", "subtitle": "店内用餐" },
+        { "code": "take-in-store", "title": "外带", "subtitle": "店内自提" }
+      ]
+    }
+  }
+}

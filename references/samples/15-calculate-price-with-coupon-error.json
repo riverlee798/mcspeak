@@ -1,0 +1,13 @@
+{
+  "_tool": "calculate-price",
+  "_call": "mcd-mcp.calculate-price({ storeCode: '3350020', orderType: 1, beType: 1, items: [{ productCode: '9900005466', quantity: 1, couponId: 'C0FFEE0000000000C0FFEE0000000000', couponCode: 'MCD000000000000000' }] })",
+  "_captured_at": "2026-10-24 17:25:07",
+  "_note": "带一张券（11.9元麦辣鸡腿堡券挂在巨无霸三件套上）。返回 success=false，code=600012，message 为中文业务错误。证明：券确实挂在 items[] 上、服务端逐券强校验有效性；无效券是硬失败而非静默忽略。",
+  "raw_response": {
+    "success": false,
+    "code": 600012,
+    "message": "此卡券不在使用日期内，请在有效期内来使用哦！",
+    "datetime": "2026-10-24 17:25:07",
+    "traceId": "2b2358eb575c1514eec4992de3e2e98c"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "_tool": "query-store-coupons",
+  "_call": "mcd-mcp.query-store-coupons({ storeCode: '3350020', orderType: 1, beType: 1 })",
+  "_captured_at": "2026-10-24 17:24:44",
+  "_note": "重点结论：返回 data 为空数组，即使刚 auto-bind 成功 3 张券。连续调用两次结果一致。原因推断：这 3 张券有效期为 2026-10-26 10:30 起（今日 10-24 尚未生效），故门店侧判定不可用。",
+  "raw_response": {
+    "success": true,
+    "code": 200,
+    "message": "请求成功",
+    "datetime": "2026-10-24 17:24:44",
+    "traceId": "b312da931d6a7b95641ccd8d3e39b5c7",
+    "data": []
+  },
+  "documented_fields_when_non_empty": {
+    "data[].title": "券名",
+    "data[].couponId": "券ID（同一券ID可对应多个券码，需按 couponId 分组）",
+    "data[].couponCode": "券码",
+    "data[].tradeDateTime": "有效期",
+    "data[].products[].productName": "适用商品名",
+    "data[].products[].productCode": "适用商品编码"
+  }
+}

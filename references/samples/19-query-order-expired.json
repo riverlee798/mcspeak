@@ -1,0 +1,50 @@
+{
+  "_meta": {
+    "step": "超时未支付后查询（expirePayTime=19:13:45 已过，查询时间 19:14:24）",
+    "datetime": "2026-10-24 19:14:24",
+    "orderId": "1030000000000000000000000001",
+    "key_finding": "超时未支付没有独立的『已过期』状态，而是变成 orderStatus='订单已取消' + status='60'；且 status 码与工具文档的 1/2/4/6/7/8/10 枚举体系完全不同（60 不在文档里）",
+    "side_effect": "pickupCode 仍为空串；金额字段仍保留原值（未变成 0）；expirePayTime 原样保留"
+  },
+  "raw_response": {
+    "success": true,
+    "code": 200,
+    "message": "请求成功",
+    "datetime": "2026-10-24 19:14:24",
+    "traceId": "110f1ee08fabb5c52367ebf047adb711",
+    "data": {
+      "orderId": "1030000000000000000000000001",
+      "orderStatus": "订单已取消",
+      "status": "60",
+      "storeName": "麦当劳济南山大路(成大高科)餐厅",
+      "storeAddress": "山大路146-6号（成大高科）一楼",
+      "orderProductList": [
+        {
+          "productName": "麦辣鸡腿汉堡三件套",
+          "productImage": "https://menu-img.mcd.cn/pcm/prod/menu/20260824/product/MS_9900005456_320.png",
+          "quantity": 1,
+          "price": "33.5",
+          "comboItemList": [
+            { "itemName": "麦辣鸡腿汉堡 切块生菜(不要)", "itemQuantity": 1 },
+            { "itemName": "中薯条", "itemQuantity": 1 },
+            { "itemName": "可乐中杯 冰(去冰)", "itemQuantity": 1 }
+          ]
+        }
+      ],
+      "totalAmount": "33.5",
+      "realTotalAmount": "33.5",
+      "totalDiscountAmount": "0",
+      "couponList": [],
+      "createTime": "2026-10-24 18:58:45",
+      "deliveryPrice": "0",
+      "realDeliveryPrice": "0",
+      "needTableware": false,
+      "productPrice": "33.5",
+      "takeWay": "外带",
+      "pickupCode": "00000",
+      "expirePayTime": "2026-10-24 19:13:45",
+      "payId": "1110000000000000000001",
+      "remark": ""
+    }
+  }
+}

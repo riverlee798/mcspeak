@@ -1,0 +1,81 @@
+{
+  "_meta": {
+    "step": "真实下单前最后一次计算价格（待用户确认后才 create-order）",
+    "datetime": "2026-10-24 18:53:53",
+    "store": { "storeCode": "3350020", "storeName": "麦当劳济南山大路(成大高科)餐厅" },
+    "scene": "到店自取 orderType=1 / beType=1（不传 beCode）",
+    "intent": "鸡肉汉堡套餐 + 汉堡去掉一样配料（切块生菜，unselectedKey=0-0）+ 饮料去冰（selectedKey=0-0）+ 取餐方式 take-in-store",
+    "modification_semantics": {
+      "100136 麦香鸡酱": "保留 → key=0-1 (selectedKey)",
+      "120512 切块生菜": "去掉 → key=0-0 (unselectedKey)",
+      "200002 冰量": "去冰 → key=0-0（该组 minValues=1/maxValues=1，只传选中的一项）"
+    },
+    "note": "calculate-price 只接受 items，不校验 takeWayCode（takeWayCode 只在 create-order 用）"
+  },
+  "request": {
+    "storeCode": "3350020",
+    "orderType": 1,
+    "beType": 1,
+    "items": [
+      {
+        "productCode": "9900005456",
+        "quantity": 1,
+        "roundList": [
+          {
+            "round": "1",
+            "comboItemList": [
+              {
+                "code": "1440",
+                "quantity": 1,
+                "modification": {
+                  "values": [
+                    { "code": "100136", "key": "0-1", "quantity": 1 },
+                    { "code": "120512", "key": "0-0", "quantity": 1 }
+                  ]
+                }
+              }
+            ]
+          },
+          { "round": "2", "comboItemList": [{ "code": "4810", "quantity": 1 }] },
+          {
+            "round": "3",
+            "comboItemList": [
+              {
+                "code": "3050",
+                "quantity": 1,
+                "modification": { "values": [{ "code": "200002", "key": "0-0", "quantity": 1 }] }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "raw_response": {
+    "success": true,
+    "code": 200,
+    "message": "请求成功",
+    "datetime": "2026-10-24 18:53:53",
+    "traceId": "e8b903e56d9f4f7358f6cf94695443b7",
+    "data": {
+      "productOriginalPrice": 3350,
+      "productPrice": 3350,
+      "originalPrice": 3350,
+      "discount": 0,
+      "price": 3350,
+      "productList": [
+        {
+          "productCode": "9900005456",
+          "productName": "麦辣鸡腿汉堡三件套",
+          "quantity": 1,
+          "originalSubtotal": 3350,
+          "subtotal": 3350
+        }
+      ],
+      "takeWayList": [
+        { "code": "eat-in", "title": "堂食", "subtitle": "店内用餐" },
+        { "code": "take-in-store", "title": "外带", "subtitle": "店内自提" }
+      ]
+    }
+  }
+}

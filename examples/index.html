@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>mcspeak · 示例卡片</title>
+<style>
+  :root{--red:#D0021B;--yellow:#FFC72C;--ink:#0B0B0B;--muted:#5A5A5A;--line:#E3E3E3}
+  *{box-sizing:border-box}
+  body{margin:0;background:#F4F4F4;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.5}
+  .wrap{max-width:900px;margin:0 auto;padding:16px}
+  header{background:var(--red);color:#fff;border-radius:14px;padding:16px 18px;margin-bottom:16px}
+  header h1{margin:0;font-size:20px}
+  header p{margin:6px 0 0;font-size:13px;opacity:.92}
+  h2{font-size:15px;margin:22px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+  .grid{display:grid;grid-template-columns:1fr;gap:10px}
+  @media(min-width:640px){.grid{grid-template-columns:1fr 1fr 1fr}}
+  a.card{display:block;text-decoration:none;color:var(--ink);background:#fff;border:3px solid var(--ink);
+         border-radius:12px;padding:14px;font-weight:800}
+  a.card:active{transform:translateY(1px)}
+  a.card .t{font-size:16px}
+  a.card .d{font-size:12px;color:var(--muted);font-weight:600;margin-top:4px}
+  a.card .e{font-size:22px;float:right;margin-top:-2px}
+  .note{font-size:12px;color:var(--muted);margin-top:18px;border-top:1px dashed var(--line);padding-top:12px}
+  .tag{display:inline-block;background:var(--yellow);border:2px solid var(--ink);border-radius:6px;
+       padding:1px 8px;font-size:11px;font-weight:900}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>mcspeak · 麦麦替你说 — 示例卡片</h1>
+    <p>真实订单数据（麦辣鸡腿汉堡三件套 ¥33.50 · 去切块生菜 · 可乐去冰 · 外带）· 取餐码 00000 为占位示例</p>
+  </header>
+
+  <h2>Русский · 俄语</h2>
+  <div class="grid">
+    <a class="card" href="ru/counter_card.html"><span class="e">🎫</span><div class="t">柜台点餐卡</div><div class="d">Counter card</div></a>
+    <a class="card" href="ru/payment_notice.html"><span class="e">💳</span><div class="t">待付款提示</div><div class="d">Payment notice</div></a>
+    <a class="card" href="ru/pickup_card.html"><span class="e">🍟</span><div class="t">取餐卡</div><div class="d">Pickup card</div></a>
+    <a class="card" href="ru/map_card.html"><span class="e">📍</span><div class="t">地图卡</div><div class="d">Map / taxi card</div></a>
+  </div>
+
+  <h2>日本語 · 日语</h2>
+  <div class="grid">
+    <a class="card" href="ja/counter_card.html"><span class="e">🎫</span><div class="t">柜台点餐卡</div><div class="d">Counter card</div></a>
+    <a class="card" href="ja/payment_notice.html"><span class="e">💳</span><div class="t">待付款提示</div><div class="d">Payment notice</div></a>
+    <a class="card" href="ja/pickup_card.html"><span class="e">🍟</span><div class="t">取餐卡</div><div class="d">Pickup card</div></a>
+    <a class="card" href="ja/map_card.html"><span class="e">📍</span><div class="t">地图卡</div><div class="d">Map / taxi card</div></a>
+  </div>
+
+  <h2>العربية · 阿拉伯语（RTL）</h2>
+  <div class="grid">
+    <a class="card" href="ar/counter_card.html"><span class="e">🎫</span><div class="t">柜台点餐卡</div><div class="d">Counter card · dir=rtl</div></a>
+    <a class="card" href="ar/payment_notice.html"><span class="e">💳</span><div class="t">待付款提示</div><div class="d">Payment notice</div></a>
+    <a class="card" href="ar/pickup_card.html"><span class="e">🍟</span><div class="t">取餐卡</div><div class="d">Pickup card</div></a>
+    <a class="card" href="ar/map_card.html"><span class="e">📍</span><div class="t">地图卡</div><div class="d">Map / taxi card</div></a>
+  </div>
+
+  <div class="note">
+    <span class="tag">SAMPLE</span>
+    <p>全部为示例数据，不含真实手机号、地址、订单号。中文区固定 <code>lang="zh-CN" dir="ltr"</code>；用户语言区按语言设置 <code>lang</code>/<code>dir</code>。
+    卡片为单文件 HTML，CSS/JS 全内联，离线可用，可直接截图给店员看。</p>
+    <p>手机上建议：横屏 + 屏幕亮度调到最高；柜台卡优先展示中文大字块，取餐卡优先展示取餐码。</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+{
+  "_meta": {
+    "step": "create-order（真实下单，未付款；随后将取消）",
+    "datetime": "2026-10-24 18:58:45",
+    "store": { "storeCode": "3350020", "storeName": "麦当劳济南山大路(成大高科)餐厅" },
+    "scene": "到店自取 orderType=1 / beType=1，takeWayCode=take-in-store（外带）",
+    "amount_unit": "⚠️ 本接口金额是【元】字符串（\"33.5\"），与 calculate-price 的【分】整数不同",
+    "request": {
+      "storeCode": "3350020",
+      "orderType": 1,
+      "beType": 1,
+      "takeWayCode": "take-in-store",
+      "items": [
+        {
+          "productCode": "9900005456",
+          "quantity": 1,
+          "roundList": [
+            {
+              "round": "1",
+              "comboItemList": [
+                {
+                  "code": "1440",
+                  "quantity": 1,
+                  "modification": {
+                    "values": [
+                      { "code": "100136", "key": "0-1", "quantity": 1 },
+                      { "code": "120512", "key": "0-0", "quantity": 1 }
+                    ]
+                  }
+                }
+              ]
+            },
+            { "round": "2", "comboItemList": [{ "code": "4810", "quantity": 1 }] },
+            {
+              "round": "3",
+              "comboItemList": [
+                {
+                  "code": "3050",
+                  "quantity": 1,
+                  "modification": { "values": [{ "code": "200002", "key": "0-0", "quantity": 1 }] }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "raw_response": {
+    "success": true,
+    "code": 200,
+    "message": "请求成功",
+    "datetime": "2026-10-24 18:58:45",
+    "traceId": "2485bc0c650c9f194b03dbb1a2337352",
+    "data": {
+      "orderId": "1030000000000000000000000001",
+      "payId": "1110000000000000000001",
+      "payH5Url": "https://example.invalid/pay?orderId=REDACTED",
+      "orderDetail": {
+        "orderId": "1030000000000000000000000001",
+        "orderStatus": "待支付",
+        "status": "10",
+        "storeName": "麦当劳济南山大路(成大高科)餐厅",
+        "storeAddress": "山大路146-6号（成大高科）一楼",
+        "orderProductList": [
+          {
+            "productName": "麦辣鸡腿汉堡三件套",
+            "productImage": "https://menu-img.mcd.cn/pcm/prod/menu/20260824/product/MS_9900005456_320.png",
+            "quantity": 1,
+            "price": "33.5",
+            "comboItemList": [
+              { "itemName": "麦辣鸡腿汉堡 切块生菜(不要)", "itemQuantity": 1 },
+              { "itemName": "中薯条", "itemQuantity": 1 },
+              { "itemName": "可乐中杯 冰(去冰)", "itemQuantity": 1 }
+            ]
+          }
+        ],
+        "totalAmount": "33.5",
+        "realTotalAmount": "33.5",
+        "totalDiscountAmount": "0",
+        "couponList": [],
+        "createTime": "2026-10-24 18:58:45",
+        "deliveryPrice": "0",
+        "realDeliveryPrice": "0",
+        "needTableware": false,
+        "productPrice": "33.5",
+        "takeWay": "外带",
+        "pickupCode": "00000",
+        "expirePayTime": "2026-10-24 19:13:45",
+        "payId": "1110000000000000000001",
+        "remark": ""
+      }
+    }
+  }
+}

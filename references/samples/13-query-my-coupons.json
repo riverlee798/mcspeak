@@ -1,0 +1,41 @@
+{
+  "_tool": "query-my-coupons",
+  "_call": "mcd-mcp.query-my-coupons({ page: '1', pageSize: '200' })",
+  "_captured_at": "2026-10-24 17:24:52",
+  "_note": "返回文本非 JSON；且不含 couponId / couponCode / 适用商品列表，只有标题、优惠形式、有效期、领取时间、标签、图片。工具自报“共 2 张可用”，但 auto-bind 领到 3 张，说明“可用”口径含时间/状态过滤。",
+  "raw_text": "# 您的优惠券列表\n\n共 2 张可用优惠券 | 第 1/1 页 | 每页 200 条\n\n## 11.9元麦辣鸡腿堡\n- **优惠**: ¥11.9 (用券价格)\n- **有效期**: 2026-10-26 10:30-2026-10-30 23:59 周一、二、三、四、五 10:30-23:59\n- **领取时间**: 今日收到\n- **标签**: 到店专用、外送专用\n\n## 19.9元王牌炸鸡任选2\n- **优惠**: ¥19.9 (用券价格)\n- **有效期**: 2026-10-26 10:30-2026-10-30 23:59 周一、二、三、四、五 10:30-23:59\n- **领取时间**: 今日收到\n- **标签**: 到店专用、外送专用",
+  "parsed": {
+    "available_count": 2,
+    "page": 1,
+    "page_size": 200,
+    "coupons": [
+      {
+        "title": "11.9元麦辣鸡腿堡",
+        "offer_type": "用券价格",
+        "price": 11.9,
+        "valid_time": "2026-10-26 10:30 - 2026-10-30 23:59 (周一至周五 10:30-23:59)",
+        "received": "今日收到",
+        "tags": ["到店专用", "外送专用"],
+        "couponId": null,
+        "couponCode": null,
+        "products": null
+      },
+      {
+        "title": "19.9元王牌炸鸡任选2",
+        "offer_type": "用券价格",
+        "price": 19.9,
+        "valid_time": "2026-10-26 10:30 - 2026-10-30 23:59 (周一至周五 10:30-23:59)",
+        "received": "今日收到",
+        "tags": ["到店专用", "外送专用"],
+        "couponId": null,
+        "couponCode": null,
+        "products": null
+      }
+    ]
+  },
+  "_couponId_mapping_from_auto_bind": {
+    "11.9元麦辣鸡腿堡": { "couponId": "C0FFEE0000000000C0FFEE0000000000", "couponCode": "MCD000000000000000" },
+    "19.9元王牌炸鸡任选2": { "couponId": "C0FFEE0000000000C0FFEE0000000000", "couponCode": "MCD000000000000000" },
+    "免费脆薯饼": { "couponId": "C0FFEE0000000000C0FFEE0000000000", "couponCode": "MCD000000000000000" }
+  }
+}
