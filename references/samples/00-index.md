@@ -28,7 +28,7 @@
 | **17** | `17-create-order.json` | **真实下单（未付款）** | `orderId`/`payH5Url`/`expirePayTime`（+15min）；`pickupCode=""`；**特调进单了** |
 | **18** | `18-query-order-unpaid.json` | 未支付查询 | `待支付` / `10`；结构平铺、无 `payH5Url` |
 | **19** | `19-query-order-expired.json` | **超时未付后查询** | **`订单已取消` / `60`**（没有"已过期"状态）；金额与 pickupCode 不归零 |
-| **20** | `20-query-order-completed.json` | **已完成历史单** | **`订单已完成` / `40`**；`pickupCode="35214"`；含券明细与"麦金卡月卡"非餐品行 |
+| **20** | `20-query-order-completed.json` | **已完成历史单** | **`订单已完成` / `40`**；`pickupCode="00000"`；含券明细与"麦金卡月卡"非餐品行 |
 | 21 | `21-order-list.json` | 历史订单列表 | 只给 `orderStatus` 文字、**不给 status 码**；comboItemList 是结构化字段 |
 
 ## 本轮状态码实测汇总

@@ -7,6 +7,10 @@
 
 ## 1. 通用规则（所有语言都适用）
 
+0. **默认一律用标准书面语**（standard / written register），不用方言、土语、拉丁音译。
+   - **阿拉伯语：标准阿拉伯语（MSA / الفصحى）**，**不要**海湾、埃及、黎凡特方言（避免 "شلونك"「إيش」「كده」这类），也不要用 Latin 音译（Arabizi）。
+   - **只有用户自己先用方言/口语写，才跟随他的语体**；他没换，就不许换。跟随的是**他写出来的语体**，不是他的国籍。
+   - 德语用标准德语（Hochdeutsch），不用巴伐利亚/瑞士方言；西语用中性标准西语，不用 voseo；葡语默认巴西标准写法。
 1. **用目标语言的原生表达，不要翻译腔。** 中文的"麻烦您""如果方便的话"不能直译成 "Please trouble you" / "If convenient"；要换成本国人对店员真实会说的话。
 2. **礼貌等级要选对。** 俄语用 вы、法语用 vous、德语用 Sie、日语用です・ます、韩语用해요체、西语用 usted；英语不用过度客套（"Could you" 足够，不要 "Would you be so kind as to"）。
 3. **跟随用户的语气。** 用户说 "yo" / "привет" / "タメ口" 就别用敬语；用户用敬语就别突然变随意。默认走中性礼貌。
@@ -17,6 +21,13 @@
 8. **从右往左的语言（阿拉伯语）整块右对齐**，数字仍用阿拉伯数字（33.50），货币符号位置随语言。
 9. **商品名给两行**：中文原名（给店员看）+ 目标语言译名（给访客看）。中文名不要音译成拼音给访客当名字用。
 10. **所有"保证类"表述禁止**：no guarantee / 保証できません / не гарантируем…（见 `diet_rules.md`）。
+11. **凡是标着"用户语言"的位置，必须真的是他的语言。** 餐品名、门店说明、就餐方式、付款方式、状态、按钮、卡片、对话里的纯文本版——一处都不能用英文或中文顶替。
+    - 查表查不到（新商品、新状态、新语言）：**当场翻译**，按本文件的风格规则产出，**不许回退英文**。
+    - 唯一允许出现英文的场景：① 用户本人的语言就是英文；② 银行卡/App 里的**品牌名**（WeChat Pay、Alipay、McDonald's）；③ 中文原文（那是给店员看的，必须保留）。
+12. **RTL 语言在对话里要加方向隔离**，否则编号、括号、金额会跑位：
+    - 在阿拉伯语/希伯来语/波斯语/乌尔都语的句子两侧或关键片段两侧加 **RLM（U+200F）**；
+    - 整段是 RTL 时用 **RLI … PDI（U+2067 … U+2069）** 包住，中文原文、订单号、`①②③` 编号用 **LRI … PDI（U+2066 … U+2069）** 单独隔离；
+    - 卡片里靠 `dir="rtl"` + `.row{direction:ltr}` 解决，不要在 HTML 里塞这些控制符。
 
 ## 2. 语言总表
 
@@ -49,7 +60,7 @@
 | 付款指引 | Please pay before **19:13** — that's 15 minutes from now. |
 | 订单已取消（超时未付款） | The payment window passed, so the order was cancelled automatically. Nothing was charged — shall I start a new one? |
 | 制作中 | Paid! The kitchen is making it now. |
-| 请取餐 | Your order's ready — pickup code **1234**. Show this card at the counter. |
+| 待取餐 | Your order's ready — pickup code **1234**. Show this card at the counter. |
 | 出错 | Something went wrong on McDonald's side. Nothing was charged. Let's try again. |
 | 结束祝福 | Enjoy your meal — have a good one! |
 
@@ -67,7 +78,7 @@
 | 付款指引 | Пожалуйста, оплатите до **19:13** — это через 15 минут. |
 | 订单已取消（超时未付款） | Время на оплату истекло, и заказ отменён автоматически. Деньги не списаны — создать новый? |
 | 制作中 | Оплата прошла! Уже готовят. |
-| 请取餐 | Ваш заказ готов — номер **1234**. Покажите эту карточку на кассе. |
+| 待取餐 | Ваш заказ готов — номер **1234**. Покажите эту карточку на кассе. |
 | 出错 | Что-то пошло не так на стороне McDonald's. Деньги не списаны. Попробуем ещё раз? |
 | 结束祝福 | Приятного аппетита! |
 
@@ -85,7 +96,7 @@
 | 付款指引 | **19:13** までにお支払いください。あと15分です。 |
 | 订单已取消（超时未付款） | お支払いの時間が過ぎたため、ご注文は自動でキャンセルされました。料金は発生していません。新しく作り直しますか？ |
 | 制作中 | お支払いを確認しました。ただいま調理中です。 |
-| 请取餐 | できあがりました。受け取り番号は **1234** です。このカードをカウンターでお見せください。 |
+| 待取餐 | できあがりました。受け取り番号は **1234** です。このカードをカウンターでお見せください。 |
 | 出错 | マクドナルド側でエラーが発生しました。料金は発生していません。もう一度お試しください。 |
 | 结束祝福 | ごゆっくりお召し上がりください。 |
 
@@ -103,7 +114,7 @@
 | 付款指引 | **19:13**까지 결제해 주세요. 지금부터 15분이에요. |
 | 订单已取消（超时未付款） | 결제 시간이 지나서 주문이 자동으로 취소됐어요. 결제는 안 됐어요. 새로 주문할까요? |
 | 制作中 | 결제 완료됐어요. 지금 만드는 중이에요. |
-| 请取餐 | 준비됐어요. 픽업 번호는 **1234**예요. 이 카드를 카운터에 보여 주세요. |
+| 待取餐 | 준비됐어요. 픽업 번호는 **1234**예요. 이 카드를 카운터에 보여 주세요. |
 | 出错 | 맥도날드 쪽에서 문제가 생겼어요. 결제는 안 됐어요. 다시 해 볼까요? |
 | 结束祝福 | 맛있게 드세요! |
 
@@ -121,7 +132,7 @@
 | 付款指引 | يرجى الدفع قبل **19:13** — أي بعد 15 دقيقة. |
 | 订单已取消（超时未付款） | انتهى وقت الدفع، فأُلغي الطلب تلقائيًا. لم يُخصم أي مبلغ — هل أبدأ طلبًا جديدًا؟ |
 | 制作中 | تم الدفع! جارٍ تحضير الطلب الآن. |
-| 请取餐 | طلبك جاهز — رقم الاستلام **1234**. اعرض هذه البطاقة على الكاشير. |
+| 待取餐 | طلبك جاهز — رقم الاستلام **1234**. اعرض هذه البطاقة على الكاشير. |
 | 出错 | حدث خطأ من جانب ماكدونالدز. لم يُخصم أي مبلغ. لنحاول مرة أخرى. |
 | 结束祝福 | بالهناء والشفاء! |
 
@@ -139,7 +150,7 @@
 | 付款指引 | Merci de payer avant **19 h 13** — dans 15 minutes. |
 | 订单已取消（超时未付款） | Le délai de paiement est dépassé, la commande a donc été annulée automatiquement. Rien n'a été débité — j'en crée une nouvelle ? |
 | 制作中 | Paiement reçu ! La cuisine prépare votre commande. |
-| 请取餐 | Votre commande est prête — numéro **1234**. Montrez cette carte au comptoir. |
+| 待取餐 | Votre commande est prête — numéro **1234**. Montrez cette carte au comptoir. |
 | 出错 | Une erreur est survenue côté McDonald's. Rien n'a été débité. On réessaie ? |
 | 结束祝福 | Bon appétit ! |
 
@@ -157,7 +168,7 @@
 | 付款指引 | Pague antes de las **19:13** — faltan 15 minutos. |
 | 订单已取消（超时未付款） | Se acabó el plazo de pago, así que el pedido se canceló automáticamente. No se cobró nada. ¿Lo creo de nuevo? |
 | 制作中 | ¡Pago recibido! Ya lo están preparando. |
-| 请取餐 | Su pedido está listo: número **1234**. Muestre esta tarjeta en el mostrador. |
+| 待取餐 | Su pedido está listo: número **1234**. Muestre esta tarjeta en el mostrador. |
 | 出错 | Hubo un error del lado de McDonald's. No se cobró nada. ¿Lo intentamos otra vez? |
 | 结束祝福 | ¡Que lo disfrute! |
 
@@ -175,7 +186,7 @@
 | 付款指引 | Bitte zahlen Sie bis **19:13** — in 15 Minuten. |
 | 订单已取消（超时未付款） | Die Zahlungsfrist ist abgelaufen, daher wurde die Bestellung automatisch storniert. Es wurde nichts belastet. Soll ich eine neue anlegen? |
 | 制作中 | Zahlung eingegangen! Die Küche bereitet Ihre Bestellung zu. |
-| 请取餐 | Ihre Bestellung ist fertig — Abholnummer **1234**. Zeigen Sie diese Karte am Counter. |
+| 待取餐 | Ihre Bestellung ist fertig — Abholnummer **1234**. Zeigen Sie diese Karte am Counter. |
 | 出错 | Auf McDonald's-Seite ist ein Fehler aufgetreten. Es wurde nichts belastet. Noch einmal versuchen? |
 | 结束祝福 | Guten Appetit! |
 

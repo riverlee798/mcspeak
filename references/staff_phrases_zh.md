@@ -96,8 +96,13 @@
 |---|---|---|
 | `staff.taxi_hello` | 师傅您好，麻烦送我到这里，谢谢！ | Hello driver — please take me to this address, thank you! |
 | `staff.taxi_show` | 就是下面这个地址，麻烦您看一下，谢谢～ | Here is the address — please take a look. Thank you! |
+| `staff.ask_metro` | 请问最近的地铁站怎么走？ | Excuse me, how do I get to the nearest metro station? |
+| `staff.ask_bus` | 请问最近的公交站在哪里？ | Excuse me, where is the nearest bus stop? |
 
 > **地址必须照抄门店查询返回的原文**（含号数后缀、括号、楼层），一个字都不能省、不能简写。
+>
+> **地铁 / 公交只给「问句」，不给站名**：mcd-mcp 没有任何交通数据，编一个站名比不说更糟。
+> 站名让地图 App 现查（高德搜「地铁站」/「公交站」），或者拿上面这两句问店员。
 
 ---
 

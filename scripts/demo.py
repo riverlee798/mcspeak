@@ -218,7 +218,12 @@ def main():
     pick_html = os.path.join(outdir, "2-pickup_card.html")
     rc.render("pickup", lang, pick_html, os.path.join(S, "17-create-order.json"),
               pickup_code=done["pickupCode"] or "00000", sample=True)
-    say(lang, "paid", "取餐码用大字显示；状态表里「请取餐」高亮。")
+    say(lang, "paid", "取餐码用大字显示；状态表里「待取餐」高亮。")
+    for st, zh_note in [("确认中", "钱已付，等几秒；别重复下单"),
+                        ("配餐中", "后厨在做，在取餐台附近等"),
+                        ("待取餐", "现在去取餐台 ★"),
+                        ("订单已准备完毕", "拿餐并当场核对")]:
+        print("   App 状态：%-8s → %s" % (st, zh_note))
     print("   📄 已生成：%s" % os.path.relpath(pick_html, ROOT))
 
     # ---------- S12 柜台卡 ----------

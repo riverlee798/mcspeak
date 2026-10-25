@@ -7,11 +7,12 @@
 
 ```
 examples/
-├── index.html                 入口（列出 9 张卡）
+├── index.html                 入口（列出 12 张卡）
 ├── ru/counter_card.html       柜台点餐卡 · 俄语
 ├── ru/payment_notice.html     待付款提示 · 俄语
 ├── ru/pickup_card.html        取餐卡 · 俄语
-├── ja/…  ar/…                同上（日语 / 阿拉伯语，ar 整卡 dir=rtl）
+├── ru/map_card.html           地图 / 打车卡 · 俄语
+├── ja/…  ar/…                同上 4 张（日语 / 阿拉伯语，ar 整卡 dir=rtl）
 ```
 
 ## 在手机上看（局域网）
@@ -30,7 +31,7 @@ powershell -c "Get-NetIPAddress -AddressFamily IPv4 | Select IPAddress,Interface
   `netsh advfirewall firewall add rule name="mcspeak 8000" dir=in action=allow protocol=TCP localport=8000`
 - 电脑和手机不在同一 Wi-Fi / 路由器开了 AP 隔离时只能走"发文件"。
 
-## 版式规则（三个模板一致）
+## 版式规则（四个模板一致）
 
 | 规则 | 实现 |
 |---|---|

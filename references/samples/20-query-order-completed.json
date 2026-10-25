@@ -6,7 +6,7 @@
     "createTime": "2026-05-24 13:13:23",
     "key_findings": [
       "已完成：orderStatus='订单已完成' + status='40'",
-      "pickupCode 有值 = '35214'（5 位数字）→ 取餐码确实在支付/完成后才有值",
+      "pickupCode 有值 = '00000'（5 位数字）→ 取餐码确实在支付/完成后才有值",
       "takeWay='堂食'（与本轮外带单对照，说明 takeWay 存的是中文文字）",
       "订单里可以混入非餐品行：『麦金卡月卡（30天）』price=19，comboItemList=[]",
       "totalAmount=85 是原价合计，realTotalAmount=52.5 是实付，总优惠 32.5；券名在 couponList 里",

@@ -42,6 +42,14 @@
   a.nav .nloc{font-size:13px;font-weight:700;color:var(--muted);margin-top:2px}
   a.nav .note{font-size:12px;font-weight:700;color:#8A0011;margin-top:6px;line-height:1.35}
 
+  /* 地铁 / 公交：只给「问店员的中文」+「地图怎么搜」，不编站名 */
+  if(D.transport&&D.transport.length){
+    app.insertAdjacentHTML('beforeend', sec('<b>地铁 / 公交</b> · '+esc(D.sec.transport),
+      D.transport.map(function(x){
+        return cell('<span class="ic">'+esc(x.icon)+'</span>'+esc(x.zh), x.local, '');
+      }).join('')));
+  }
+
   /* 二维码 */
   .qr{display:flex;gap:14px;align-items:center;border:3px solid var(--ink);border-radius:12px;padding:10px}
   .qr img{width:132px;height:132px;flex:0 0 auto;display:block}
@@ -71,6 +79,7 @@
   .warn{background:#FFF1F1;border:3px solid var(--red);color:#8A0011;border-radius:12px;padding:10px 12px;
         margin-top:10px;font-size:15px;font-weight:800}
   @media print{.btns{display:none!important}body{background:#fff}}
+  .ic{display:inline-block;margin-right:8px;font-size:1.05em}
 </style>
 </head>
 <body>
@@ -79,7 +88,7 @@
  "kind": "map",
  "lang": "ja",
  "dir": "ltr",
- "generatedAt": "2026-10-24 21:46",
+ "generatedAt": "2026-10-25 11:50",
  "isSample": true,
  "howto": {
   "zh": "您好，我要去这家麦当劳，麻烦您看一下地址。",
@@ -89,7 +98,7 @@
   "nameZh": "麦当劳济南山大路(成大高科)餐厅",
   "addressZh": "山大路146-6号（成大高科）一楼",
   "local": "マクドナルド山大路店",
-  "addressLocal": "山大路146-6号（成大高科）1階"
+  "addressLocal": "山東路（シャンダー通り）146-6号 成大高科ビル1階"
  },
  "coords": null,
  "links": [
@@ -129,10 +138,23 @@
   "nameZh": "麦当劳济南山大路(成大高科)餐厅",
   "local": "この画面をタクシーの運転手に見せてください。中国語の住所は上にあります。"
  },
+ "transport": [
+  {
+   "icon": "🚇",
+   "zh": "请问最近的地铁站怎么走？",
+   "local": "Amap で店の近くの「地铁站」を検索してください。"
+  },
+  {
+   "icon": "🚌",
+   "zh": "请问最近的公交站在哪里？",
+   "local": "Amap で店の近くの「公交站」を検索してください。"
+  }
+ ],
  "sec": {
   "howToGo": "行き方",
   "qr": "スキャンして地図を開く",
-  "taxi": "運転手に見せる"
+  "taxi": "運転手に見せる",
+  "transport": "地下鉄・バス"
  },
  "ui": {
   "speak": "住所を読み上げる",

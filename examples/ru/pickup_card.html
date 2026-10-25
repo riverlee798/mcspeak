@@ -96,6 +96,10 @@
   .warn{background:#FFF1F1;border:3px solid var(--red);color:#8A0011;border-radius:12px;padding:10px 12px;
         margin-top:10px;font-size:15px;font-weight:800}
   @media print{.btns,.ov{display:none!important}}
+  .cnote{margin-top:6px;padding-top:6px;border-top:2px dashed var(--ink);text-align:center}
+  .cnote .cz{display:block;font-size:clamp(13px,3.4vw,16px);font-weight:900;line-height:1.3}
+  .cnote .loc{font-size:clamp(11px,2.9vw,13px)!important;margin-top:2px}
+  .vw{font-weight:900}
 </style>
 </head>
 <body>
@@ -105,16 +109,16 @@
  "kind": "pickup",
  "lang": "ru",
  "dir": "ltr",
- "generatedAt": "2026-10-24 21:46",
+ "generatedAt": "2026-10-25 11:50",
  "isSample": true,
  "store": {
   "zh": "麦当劳济南山大路(成大高科)餐厅",
   "pinyin": "Mài dāng láo Jǐ nán Shān dà lù (Chéng dà gāo kē) cān tīng",
-  "local": "McDonald's Shanda Road"
+  "local": "Макдональдс на Шаньда-роуд, 1 этаж"
  },
  "howto": {
-  "zh": "您好，这是我要点的餐，请看每一格的中文。",
-  "local": "Покажите экран сотруднику; на какую строку он покажет — ту и смотрите."
+  "zh": "您好！我在手机上点好了，取餐码是 00000，谢谢！",
+  "local": "Здравствуйте! Я заказал в приложении — номер получения ниже. Спасибо!"
  },
  "items": [
   {
@@ -149,9 +153,9 @@
   }
  ],
  "price": {
-  "zhLabel": "参考价格",
+  "zhLabel": "实付",
   "amount": "¥33.50",
-  "local": "Ориентировочно ¥33.50",
+  "local": "Оплачено ¥33.50",
   "note": "Итоговую цену определяет касса.",
   "saved": "",
   "coupons": ""
@@ -161,8 +165,8 @@
   "local": "Ожидает оплаты"
  },
  "appStatus": {
-  "zh": "待支付",
-  "local": "Ожидает оплаты"
+  "zh": "待取餐",
+  "local": "Готово — заберите"
  },
  "deadline": {
   "hhmm": "19:13",
@@ -172,7 +176,8 @@
  "pickup": {
   "code": "00000",
   "zh": "取餐码",
-  "local": "НОМЕР ПОЛУЧЕНИЯ"
+  "local": "НОМЕР ПОЛУЧЕНИЯ",
+  "note": "В приложении McDonald's этот номер подписан «订单号», а не длинный «订单编码»."
  },
  "payUrl": "https://example.invalid/pay?orderId=REDACTED",
  "paySteps": [
@@ -191,8 +196,8 @@
    "local": "Откройте приложение McDonald's и найдите заказ"
   },
   {
-   "zh": "看到「请取餐」就去取餐台",
-   "local": "Когда появится 请取餐, подойдите к стойке выдачи"
+   "zh": "看到「待取餐」就去取餐台",
+   "local": "Когда появится 待取餐, подойдите к стойке выдачи"
   },
   {
    "zh": "把这张卡给店员看",
@@ -201,47 +206,79 @@
  ],
  "appVocab": [
   {
-   "zh": "取消订单",
-   "local": "Отменить",
-   "style": "outline",
+   "zh": "我已取餐",
+   "local": "Я забрал",
+   "style": "yellow",
    "pos": "1-я слева"
   },
   {
-   "zh": "联系客服",
-   "local": "Поддержка",
+   "zh": "再来一单",
+   "local": "Ещё раз",
    "style": "outline",
    "pos": "по центру"
   },
   {
-   "zh": "去支付",
-   "local": "Оплатить",
-   "style": "yellow",
+   "zh": "开发票",
+   "local": "Чек",
+   "style": "outline",
    "pos": "справа, жёлтая"
+  }
+ ],
+ "vocabRows": [
+  {
+   "zh": "订单号",
+   "local": "Номер заказа (= номер получения)"
+  },
+  {
+   "zh": "订单编码",
+   "local": "Код заказа"
+  },
+  {
+   "zh": "实付",
+   "local": "Оплачено"
   }
  ],
  "statusRows": [
   {
    "zh": "待支付",
    "local": "Ожидает оплаты",
-   "action": "",
+   "action": "Оплатите",
+   "hot": false
+  },
+  {
+   "zh": "确认中",
+   "local": "Подтверждение",
+   "action": "Подождите несколько секунд",
    "hot": false
   },
   {
    "zh": "配餐中",
    "local": "Готовится",
-   "action": "",
+   "action": "Ждите у стойки",
    "hot": false
   },
   {
-   "zh": "请取餐",
+   "zh": "待取餐",
    "local": "Готово — заберите",
-   "action": "",
+   "action": "Подойдите к стойке",
+   "hot": true
+  },
+  {
+   "zh": "订单已准备完毕",
+   "local": "Заказ готов",
+   "action": "Заберите и проверьте",
    "hot": true
   },
   {
    "zh": "订单已完成",
    "local": "Выполнен",
-   "action": "",
+   "action": "Ничего делать не нужно",
+   "hot": false
+  },
+  {
+   "zh": "订单已取消",
+   "local": "Отменён",
+   "action": "Деньги не списаны",
    "hot": false
   }
  ],
@@ -399,6 +436,7 @@
   "payInApp": "оплата в приложении",
   "tapYellow": "Нажмите жёлтую кнопку «去支付» справа внизу в приложении.",
   "payLink": "Запасной вариант: ссылка",
+  "codeNote": "App 里这一行叫「订单号」",
   "noSpeech": "—"
  },
  "zhui": {
@@ -432,6 +470,8 @@
   h+='<div class="code"><div class="zh">🎫 '+esc(D.pickup.zh)+'</div>'+
      '<div class="no">'+esc(D.pickup.code)+'</div>'+
      '<div class="loc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(D.pickup.local)+'</div>'+
+     (D.pickup.note?'<div class="cnote"><span class="cz">'+esc(U.codeNote)+'</span>'+
+        '<span class="loc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(D.pickup.note)+'</span></div>':'')+
      (D.isSample?'<div class="sampletag">'+esc(U.sampleTag)+'</div>':'')+'</div>';
   app.innerHTML=h;
 
@@ -468,6 +508,14 @@
     app.insertAdjacentHTML('beforeend', sec('<b>麦当劳 App 上的样子</b> · '+esc(D.sec.app), am));
   }
 
+  /* 非状态类的 App 字样 */
+  if(D.vocabRows&&D.vocabRows.length){
+    app.insertAdjacentHTML('beforeend', sec('<b>App 里的字样</b> · '+esc(D.sec.app),
+      D.vocabRows.map(function(v){
+        return cell('<span class="vw">'+esc(v.zh)+'</span>', v.local, '');
+      }).join('')));
+  }
+
   /* 状态对照 */
   if(D.statusRows&&D.statusRows.length){
     var t='<table class="st">'+D.statusRows.map(function(r){
@@ -486,14 +534,6 @@
       }).join('')));
   }
 
-  /* 给店员的中文 */
-  if(D.staffLine){
-    app.insertAdjacentHTML('beforeend',
-      '<div class="zhbig"><div class="zh">'+esc(D.staffLine.zh.split('{code}')[0])+'</div>'+
-      '<div class="no">'+esc(D.pickup.code)+'</div>'+
-      '<div class="loc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(D.staffLine.local)+'</div></div>');
-  }
-
   /* 按钮 */
   var bb=document.createElement('div'); bb.className='btns';
   var sp=document.createElement('button'); sp.className='btn primary';
@@ -501,7 +541,7 @@
     '<span class="bloc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(U.speak)+'</span></div>';
   sp.onclick=function(){
     if(!('speechSynthesis' in window))return;
-    var t=(D.staffLine?D.staffLine.zh.split('{code}')[0]:'')+String(D.pickup.code).split('').join('，')+'。';
+    var t=D.howto.zh;
     try{window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);
         u.lang='zh-CN';u.rate=0.8;window.speechSynthesis.speak(u);}catch(e){}
   };

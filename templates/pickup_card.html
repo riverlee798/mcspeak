@@ -96,6 +96,10 @@
   .warn{background:#FFF1F1;border:3px solid var(--red);color:#8A0011;border-radius:12px;padding:10px 12px;
         margin-top:10px;font-size:15px;font-weight:800}
   @media print{.btns,.ov{display:none!important}}
+  .cnote{margin-top:6px;padding-top:6px;border-top:2px dashed var(--ink);text-align:center}
+  .cnote .cz{display:block;font-size:clamp(13px,3.4vw,16px);font-weight:900;line-height:1.3}
+  .cnote .loc{font-size:clamp(11px,2.9vw,13px)!important;margin-top:2px}
+  .vw{font-weight:900}
 </style>
 </head>
 <body>
@@ -129,6 +133,8 @@
   h+='<div class="code"><div class="zh">🎫 '+esc(D.pickup.zh)+'</div>'+
      '<div class="no">'+esc(D.pickup.code)+'</div>'+
      '<div class="loc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(D.pickup.local)+'</div>'+
+     (D.pickup.note?'<div class="cnote"><span class="cz">'+esc(U.codeNote)+'</span>'+
+        '<span class="loc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(D.pickup.note)+'</span></div>':'')+
      (D.isSample?'<div class="sampletag">'+esc(U.sampleTag)+'</div>':'')+'</div>';
   app.innerHTML=h;
 
@@ -165,6 +171,14 @@
     app.insertAdjacentHTML('beforeend', sec('<b>麦当劳 App 上的样子</b> · '+esc(D.sec.app), am));
   }
 
+  /* 非状态类的 App 字样 */
+  if(D.vocabRows&&D.vocabRows.length){
+    app.insertAdjacentHTML('beforeend', sec('<b>App 里的字样</b> · '+esc(D.sec.app),
+      D.vocabRows.map(function(v){
+        return cell('<span class="vw">'+esc(v.zh)+'</span>', v.local, '');
+      }).join('')));
+  }
+
   /* 状态对照 */
   if(D.statusRows&&D.statusRows.length){
     var t='<table class="st">'+D.statusRows.map(function(r){
@@ -183,14 +197,6 @@
       }).join('')));
   }
 
-  /* 给店员的中文 */
-  if(D.staffLine){
-    app.insertAdjacentHTML('beforeend',
-      '<div class="zhbig"><div class="zh">'+esc(D.staffLine.zh.split('{code}')[0])+'</div>'+
-      '<div class="no">'+esc(D.pickup.code)+'</div>'+
-      '<div class="loc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(D.staffLine.local)+'</div></div>');
-  }
-
   /* 按钮 */
   var bb=document.createElement('div'); bb.className='btns';
   var sp=document.createElement('button'); sp.className='btn primary';
@@ -198,7 +204,7 @@
     '<span class="bloc" lang="'+D.lang+'" dir="'+D.dir+'">'+esc(U.speak)+'</span></div>';
   sp.onclick=function(){
     if(!('speechSynthesis' in window))return;
-    var t=(D.staffLine?D.staffLine.zh.split('{code}')[0]:'')+String(D.pickup.code).split('').join('，')+'。';
+    var t=D.howto.zh;
     try{window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);
         u.lang='zh-CN';u.rate=0.8;window.speechSynthesis.speak(u);}catch(e){}
   };

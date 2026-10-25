@@ -140,7 +140,7 @@ L = {
                  "One item is missing — could you check?", "I don't think this is mine",
                  "Thank you so much!"],
             steps=["Open the McDonald's app and find your order",
-                   "When it shows 请取餐, go to the pickup counter",
+                   "When it shows 待取餐, go to the pickup counter",
                    "Show this card — the staff will read the number"],
             pos=["1st from left", "middle", "right, yellow"], status={"待支付": "Awaiting payment"},
             staffLine="Here is my order — pickup code is"),
@@ -158,7 +158,7 @@ L = {
                  "Кажется, одного блюда не хватает", "Кажется, это не мой заказ",
                  "Большое спасибо!"],
             steps=["Откройте приложение McDonald's и найдите заказ",
-                   "Когда появится 请取餐, подойдите к стойке выдачи",
+                   "Когда появится 待取餐, подойдите к стойке выдачи",
                    "Покажите эту карточку — номер прочитает сотрудник"],
             pos=["1-я слева", "по центру", "справа, жёлтая"], status={"待支付": "Ожидает оплаты"},
             staffLine="Вот мой заказ, номер получения"),
@@ -175,7 +175,7 @@ L = {
             say=["紙ナプキンをください", "ケチャップを2つください",
                  "商品が1つ足りないようです", "これは私の注文ではないようです",
                  "ありがとうございました！"],
-            steps=["マクドナルドアプリで注文を開く", "「请取餐」が出たら受け取りカウンターへ",
+            steps=["マクドナルドアプリで注文を開く", "「待取餐」が出たら受け取りカウンターへ",
                    "このカードを見せる（番号は店員が読みます）"],
             pos=["左から1番目", "真ん中", "右・黄色"], status={"待支付": "お支払い待ち"},
             staffLine="注文はこちらです。受け取り番号は"),
@@ -192,7 +192,7 @@ L = {
             say=["أريد مناديل، لو سمحت", "أريد كيسين كاتشاب، لو سمحت",
                  "يبدو أن أحد الأصناف ناقص", "يبدو أن هذا ليس طلبي",
                  "شكرًا جزيلًا!"],
-            steps=["افتح تطبيق ماكدونالدز واطلب الطلب", "عند ظهور 请取餐 توجّه إلى كاونتر الاستلام",
+            steps=["افتح تطبيق ماكدونالدز واطلب الطلب", "عند ظهور 待取餐 توجّه إلى كاونتر الاستلام",
                    "اعرض هذه البطاقة — سيقرأ الموظف الرقم"],
             pos=["الأول من اليسار", "الوسط", "اليمين، أصفر"], status={"待支付": "بانتظار الدفع"},
             staffLine="هذا طلبي، رقم الاستلام"),
@@ -206,6 +206,106 @@ _EXTRA = {
     "ar": dict(pickupLabel="رقم الاستلام", payBefore="يرجى الدفع قبل"),
 }
 for _k, _v in _EXTRA.items():
+    L[_k].update(_v)
+
+# ---------------------------------------------------------------- 类型化文案 + 新状态
+# 三种卡片给店员的第一句话不同；价格标签也不同；状态用实测五段流。
+
+MORE = {
+    "en": dict(
+        storeLocal="McDonald's on Shanda Road, 1st floor",
+        howCounter="Hello, this is my order — please read the Chinese in each row.",
+        howPayment="This is my order placed in the app — it has NOT been paid yet.",
+        howPickup="Hello! I ordered in the app — my pickup number is below. Thank you!",
+        howPaymentLocal="This is my order in the app — it hasn't been paid yet.",
+        howPickupLocal="Hello! I ordered in the app — the pickup number is shown below. Thank you!",
+        priceRef="Reference price", priceDue="To pay", pricePaid="Paid",
+        codeNote="In the McDonald's app this number is labelled “订单号” — not the long “订单编码”.",
+        st={"待支付": "Awaiting payment", "确认中": "Confirming", "配餐中": "Preparing",
+            "待取餐": "Ready — collect now", "订单已准备完毕": "Order ready",
+            "订单已完成": "Completed", "订单已取消": "Cancelled"},
+        sa={"待支付": "Pay now", "确认中": "Wait a few seconds", "配餐中": "Wait near the counter",
+            "待取餐": "Go to the counter now", "订单已准备完毕": "Collect and check",
+            "订单已完成": "Nothing to do", "订单已取消": "Nothing was charged"},
+        vocab=[("订单号", "Order number (= pickup code)"), ("订单编码", "Order reference"),
+               ("实付", "Amount paid")],
+        pills=[("我已取餐", "I've collected it", "yellow", "left"),
+               ("再来一单", "Order again", "outline", "middle"),
+               ("开发票", "Invoice", "outline", "right")],
+        metro="Use Amap and search “地铁站” near the store.",
+        bus="Use Amap and search “公交站” near the store.",
+    ),
+    "ru": dict(
+        storeLocal="Макдональдс на Шаньда-роуд, 1 этаж",
+        howCounter="Здравствуйте, это мой заказ — прочитайте китайский текст в каждой строке.",
+        howPayment="Это мой заказ в приложении — он ещё НЕ оплачен.",
+        howPickup="Здравствуйте! Я заказал в приложении — номер получения ниже. Спасибо!",
+        howPaymentLocal="Это мой заказ в приложении — он ещё не оплачен.",
+        howPickupLocal="Здравствуйте! Я заказал в приложении — номер получения ниже. Спасибо!",
+        priceRef="Ориентировочно", priceDue="К оплате", pricePaid="Оплачено",
+        codeNote="В приложении McDonald's этот номер подписан «订单号», а не длинный «订单编码».",
+        st={"待支付": "Ожидает оплаты", "确认中": "Подтверждение", "配餐中": "Готовится",
+            "待取餐": "Готово — заберите", "订单已准备完毕": "Заказ готов",
+            "订单已完成": "Выполнен", "订单已取消": "Отменён"},
+        sa={"待支付": "Оплатите", "确认中": "Подождите несколько секунд", "配餐中": "Ждите у стойки",
+            "待取餐": "Подойдите к стойке", "订单已准备完毕": "Заберите и проверьте",
+            "订单已完成": "Ничего делать не нужно", "订单已取消": "Деньги не списаны"},
+        vocab=[("订单号", "Номер заказа (= номер получения)"), ("订单编码", "Код заказа"),
+               ("实付", "Оплачено")],
+        pills=[("我已取餐", "Я забрал", "yellow", "left"),
+               ("再来一单", "Ещё раз", "outline", "middle"),
+               ("开发票", "Чек", "outline", "right")],
+        metro="В Amap найдите «地铁站» рядом с рестораном.",
+        bus="В Amap найдите «公交站» рядом с рестораном.",
+    ),
+    "ja": dict(
+        storeLocal="山大路のマクドナルド（成大高科ビル1階）",
+        howCounter="こんにちは。これが注文です。各枠の中国語をお読みください。",
+        howPayment="アプリで注文したものです。まだ支払っていません。",
+        howPickup="こんにちは！アプリで注文しました。受け取り番号は下です。ありがとうございます！",
+        howPaymentLocal="アプリで注文したものです。まだ支払っていません。",
+        howPickupLocal="こんにちは！アプリで注文しました。受け取り番号は下にあります。ありがとうございます！",
+        priceRef="参考価格", priceDue="お支払い額", pricePaid="支払済み",
+        codeNote="マクドナルドアプリでは、この番号は「订单号」と表示されます（長い「订单编码」ではありません）。",
+        st={"待支付": "お支払い待ち", "确认中": "確認中", "配餐中": "準備中",
+            "待取餐": "受け取り可能", "订单已准备完毕": "準備完了",
+            "订单已完成": "完了", "订单已取消": "キャンセル"},
+        sa={"待支付": "お支払いください", "确认中": "数秒お待ちください", "配餐中": "カウンターの近くでお待ちください",
+            "待取餐": "カウンターへどうぞ", "订单已准备完毕": "受け取って確認してください",
+            "订单已完成": "操作は不要です", "订单已取消": "料金は発生していません"},
+        vocab=[("订单号", "注文番号（＝受け取り番号）"), ("订单编码", "注文コード"),
+               ("实付", "支払額")],
+        pills=[("我已取餐", "受け取りました", "yellow", "left"),
+               ("再来一单", "もう一度注文", "outline", "middle"),
+               ("开发票", "領収書", "outline", "right")],
+        metro="Amap で店の近くの「地铁站」を検索してください。",
+        bus="Amap で店の近くの「公交站」を検索してください。",
+    ),
+    "ar": dict(
+        storeLocal="ماكدونالدز في شارع شاندا، الطابق الأول",
+        howCounter="مرحبًا، هذا طلبي — يرجى قراءة النص الصيني في كل صف.",
+        howPayment="هذا طلبي في التطبيق — ولم يُدفع بعد.",
+        howPickup="مرحبًا! طلبت عبر التطبيق — رقم الاستلام أدناه. شكرًا!",
+        howPaymentLocal="هذا طلبي في التطبيق — لم يُدفع بعد.",
+        howPickupLocal="مرحبًا! طلبت عبر التطبيق — رقم الاستلام أدناه. شكرًا!",
+        priceRef="السعر التقريبي", priceDue="المطلوب دفعه", pricePaid="المدفوع",
+        codeNote="في تطبيق ماكدونالدز يظهر هذا الرقم تحت اسم «订单号»، وليس «订单编码» الطويل.",
+        st={"待支付": "بانتظار الدفع", "确认中": "قيد التأكيد", "配餐中": "قيد التحضير",
+            "待取餐": "جاهز — استلم", "订单已准备完毕": "الطلب جاهز",
+            "订单已完成": "مكتمل", "订单已取消": "ملغى"},
+        sa={"待支付": "ادفع الآن", "确认中": "انتظر ثوانٍ", "配餐中": "انتظر قرب الكاونتر",
+            "待取餐": "توجّه إلى الكاونتر", "订单已准备完毕": "استلم وتحقق",
+            "订单已完成": "لا حاجة لأي إجراء", "订单已取消": "لم يُخصم أي مبلغ"},
+        vocab=[("订单号", "رقم الطلب (= رقم الاستلام)"), ("订单编码", "رمز الطلب"),
+               ("实付", "المبلغ المدفوع")],
+        pills=[("我已取餐", "استلمت", "yellow", "left"),
+               ("再来一单", "اطلب مرة أخرى", "outline", "middle"),
+               ("开发票", "فاتورة", "outline", "right")],
+        metro="ابحث في Amap عن «地铁站» قرب المطعم.",
+        bus="ابحث في Amap عن «公交站» قرب المطعم.",
+    ),
+}
+for _k, _v in MORE.items():
     L[_k].update(_v)
 
 # 分区标题的用户语言部分（中文部分在模板里固定）
@@ -299,7 +399,7 @@ Q_LOC = {
 }
 
 SAY_KEYS = ["tissue", "ketchup", "missing_item", "not_mine", "thanks"]
-STATUS_ORDER = ["待支付", "配餐中", "请取餐", "订单已完成", "订单已取消"]
+STATUS_ORDER = ["待支付", "确认中", "配餐中", "待取餐", "订单已准备完毕", "订单已完成", "订单已取消"]
 
 # ---------------------------------------------------------------- 组装
 
@@ -321,22 +421,49 @@ def build(kind, lang, order, sample=False):
              "麦辣鸡腿汉堡": {"en": "McSpicy Chicken Burger", "ru": "Острый куриный бургер",
                           "ja": "マックスパイシーチキンバーガー", "ar": "برغر الدجاج الحار"},
              "中薯条": {"en": "Medium fries", "ru": "Картофель фри (сред.)", "ja": "ポテト（M）", "ar": "بطاطس (وسط)"},
-             "可乐中杯": {"en": "Coca-Cola (M)", "ru": "Кола (сред.)", "ja": "コーラ（M）", "ar": "كولا (وسط)"}}
+             "可乐中杯": {"en": "Coca-Cola (M)", "ru": "Кола (сред.)", "ja": "コーラ（M）", "ar": "كولا (وسط)"},
+             "经典麦旋风": {"en": "Classic McFlurry", "ru": "Макфлурри классический",
+                        "ja": "マックフルーリー（クラシック）", "ar": "ماكفلوري كلاسيكي"},
+             "奥利奥麦旋风": {"en": "Oreo McFlurry", "ru": "Макфлурри с Oreo",
+                         "ja": "オレオ マックフルーリー", "ar": "ماكفلوري أوريو"}}
     num = "①②③④⑤⑥⑦⑧⑨"
+
+    # 商品名 / 定制项译文：内置表 + --tr 注入；查不到就报错，**绝不回退中文或英文**
+    MISSING = []
+
+    def loc_name(zh):
+        v = (t.get("items") or {}).get(zh)
+        if v:
+            return v
+        v = names.get(zh, {}).get(lang)
+        if not v:
+            MISSING.append(zh)
+            return zh
+        return v
+
+    def loc_custom(zh):
+        v = (t.get("customs") or {}).get(zh)
+        if v:
+            return v
+        v = CUSTOM_LOC.get(zh, {}).get(lang)
+        if not v:
+            MISSING.append(zh)
+            return zh
+        return v
 
     items, combos_zh_all, combos_loc_all, customs = [], [], [], []
     for i, it in enumerate(order["items"]):
         cz = [c["zh"] for c in it["combos"]]
-        cl = [names.get(c["zh"], {}).get(lang, c["zh"]) for c in it["combos"]]
+        cl = [loc_name(c["zh"]) for c in it["combos"]]
         my_customs = []
         for c in it["combos"]:
             if c.get("custom"):
                 zh = natural_custom(c["zh"], c["custom"])
-                loc = CUSTOM_LOC.get(zh, {}).get(lang, c["custom"])
+                loc = loc_custom(zh)
                 my_customs.append({"zh": zh, "local": loc})
                 customs.append({"zh": zh, "local": loc})
         items.append({"n": num[i] if i < len(num) else str(i + 1),
-                      "zh": it["zh"], "local": names.get(it["zh"], {}).get(lang, it["zh"]),
+                      "zh": it["zh"], "local": loc_name(it["zh"]),
                       "qty": it["qty"], "combosZh": "＋".join(cz), "combosLocal": " · ".join(cl),
                       "customs": my_customs})
 
@@ -365,51 +492,80 @@ def build(kind, lang, order, sample=False):
         if PHRASES.get(k):
             say.append({"zh": PHRASES[k], "local": zh_slot})
 
-    app_vocab = []
-    for zh, style, pos in [("取消订单", "outline", t["pos"][0]),
-                           ("联系客服", "outline", t["pos"][1]),
-                           ("去支付", "yellow", t["pos"][2])]:
-        row = next((v for v in APP_VOCAB if v["zh"] == zh), None)
-        if row:
-            loc = {"en": {"取消订单": "Cancel order", "联系客服": "Contact us", "去支付": "Pay now"},
-                   "ru": {"取消订单": "Отменить", "联系客服": "Поддержка", "去支付": "Оплатить"},
-                   "ja": {"取消订单": "キャンセル", "联系客服": "お問い合わせ", "去支付": "支払う"},
-                   "ar": {"取消订单": "إلغاء", "联系客服": "الدعم", "去支付": "ادفع"}}[lang][zh]
-            app_vocab.append({"zh": zh, "local": loc, "style": style, "pos": pos})
+    # App 底部按钮：付款前是「取消/客服/去支付」，付款后是「我已取餐/再来一单/开发票」
+    PAY_PILL = {
+        "en": {"取消订单": "Cancel order", "联系客服": "Contact us", "去支付": "Pay now"},
+        "ru": {"取消订单": "Отменить", "联系客服": "Поддержка", "去支付": "Оплатить"},
+        "ja": {"取消订单": "キャンセル", "联系客服": "お問い合わせ", "去支付": "支払う"},
+        "ar": {"取消订单": "إلغاء", "联系客服": "الدعم", "去支付": "ادفع"},
+    }
+    if kind == "pickup":
+        pill_src = [(a, b, c) for a, b, c, _ in t["pills"]]
+    else:
+        pay = PAY_PILL.get(lang) or t.get("payPills")
+        if not pay:
+            raise SystemExit("语言 %s 缺 payPills（取消订单 / 联系客服 / 去支付 的译文），"
+                             "请在 --tr JSON 里补上，不要回退英文。" % lang)
+        pill_src = [("取消订单", pay["取消订单"], "outline"),
+                    ("联系客服", pay["联系客服"], "outline"),
+                    ("去支付", pay["去支付"], "yellow")]
+    app_vocab = [{"zh": zh, "local": loc, "style": style, "pos": t["pos"][i]}
+                 for i, (zh, loc, style) in enumerate(pill_src)]
+
+    # 非状态类的 App 词汇（订单号 / 订单编码 / 实付）
+    vocab_rows = [{"zh": zh, "local": loc} for zh, loc in t["vocab"]]
 
     status_rows = [
-        {"zh": "待支付", "local": {"en": "Awaiting payment", "ru": "Ожидает оплаты", "ja": "お支払い待ち", "ar": "بانتظار الدفع"}[lang],
-         "action": "", "hot": False},
-        {"zh": "配餐中", "local": {"en": "Preparing", "ru": "Готовится", "ja": "準備中", "ar": "قيد التحضير"}[lang],
-         "action": "", "hot": False},
-        {"zh": "请取餐", "local": {"en": "Ready — collect now", "ru": "Готово — заберите", "ja": "できあがり", "ar": "جاهز — استلم"}[lang],
-         "action": "", "hot": True},
-        {"zh": "订单已完成", "local": {"en": "Completed", "ru": "Выполнен", "ja": "完了", "ar": "مكتمل"}[lang],
-         "action": "", "hot": False},
+        {"zh": zh, "local": t["st"][zh], "action": t["sa"][zh],
+         "hot": zh in ("待取餐", "订单已准备完毕")}
+        for zh in STATUS_ORDER
     ]
+
+    if MISSING:
+        raise SystemExit(
+            "缺少 %s 译文：%s —— 请在 --tr JSON 里加 \"items\": {中文名: 译文} "
+            "或 \"customs\": {中文定制: 译文}，不要回退中文/英文。"
+            % (lang, "、".join(dict.fromkeys(MISSING))))
+
+    # 给店员的第一句话 & 价格标签：按卡片类型区分（中文固定句，不现场编）
+    if kind == "pickup":
+        how_zh = "您好！我在手机上点好了，取餐码是 %s，谢谢！" % (order["pickupCode"] or "00000")
+        how_local = t["howPickupLocal"]
+        price_zh, price_loc = "实付", t["pricePaid"]
+        price_amount = order["paid"]
+    elif kind == "payment":
+        how_zh, how_local = "这是我在手机上下的订单，还没有付款。", t["howPaymentLocal"]
+        price_zh, price_loc = "应付", t["priceDue"]
+        price_amount = order["list"]
+    else:
+        how_zh, how_local = "您好，这是我要点的餐，请看每一格的中文。", t["howtoBack"]
+        price_zh, price_loc = "参考价格", t["priceRef"]
+        price_amount = order["list"]
 
     data = {
         "kind": kind, "lang": lang, "dir": "rtl" if lang == "ar" else "ltr",
         "generatedAt": datetime.now().strftime("%Y-%m-%d %H:%M"), "isSample": bool(sample),
         "store": {"zh": order["store_zh"], "pinyin": "Mài dāng láo Jǐ nán Shān dà lù (Chéng dà gāo kē) cān tīng",
-                  "local": "McDonald's Shanda Road"},
-        "howto": {"zh": "您好，这是我要点的餐，请看每一格的中文。", "local": t["howtoBack"]},
+                  "local": t["storeLocal"]},
+        "howto": {"zh": how_zh, "local": how_local},
         "items": items, "facts": facts,
-        "price": {"zhLabel": "参考价格", "amount": "¥" + order["list"],
-                  "local": t["priceLabel"] + " ¥" + order["list"],
+        "price": {"zhLabel": price_zh, "amount": "¥" + price_amount,
+                  "local": price_loc + " ¥" + price_amount,
                   "note": t["priceNote"],
                   "saved": (t["saved"] + " ¥" + order["saved"]) if order["saved"] not in ("0.00", "0") else "",
                   "coupons": (t["coupons"] + ": " + " · ".join(order["coupons"])) if order["coupons"] else ""},
-        "status": {"zh": "待支付", "local": t["status"]["待支付"]},
-        "appStatus": {"zh": "待支付", "local": t["status"]["待支付"]},
+        "status": {"zh": "待支付", "local": t["st"]["待支付"]},
+        "appStatus": {"zh": "待支付" if kind == "payment" else "待取餐",
+                      "local": t["st"]["待支付" if kind == "payment" else "待取餐"]},
         "deadline": {"hhmm": order["deadline"],
                      "zh": "请在 " + order["deadline"] + " 前付款",
                      "local": t["payBefore"] + " " + order["deadline"]},
-        "pickup": {"code": order["pickupCode"], "zh": ZH_PICKUP, "local": t["pickupLabel"]},
+        "pickup": {"code": order["pickupCode"], "zh": ZH_PICKUP, "local": t["pickupLabel"],
+                   "note": t["codeNote"]},
         "payUrl": order["payUrl"], "paySteps": [],
         "steps": [{"zh": s, "local": L[lang]["steps"][i]} for i, s in enumerate(
-                  ["打开麦当劳 App 订单页", "看到「请取餐」就去取餐台", "把这张卡给店员看"])],
-        "appVocab": app_vocab, "statusRows": status_rows,
+                  ["打开麦当劳 App 订单页", "看到「待取餐」就去取餐台", "把这张卡给店员看"])],
+        "appVocab": app_vocab, "vocabRows": vocab_rows, "statusRows": status_rows,
         "qaStaff": qa, "sayCustomer": say,
         "sec": {"order": t["secOrder"], "facts": t["secFacts"], "dlg": t["secDlg"],
                 "staffAsk": t["secStaffAsk"], "custSay": t["secCustSay"],
@@ -418,7 +574,7 @@ def build(kind, lang, order, sample=False):
         "ui": {"speak": t["speak"], "back": t["back"], "stale": t["stale"], "sampleTag": t["sampleTag"],
                "sampleNote": t["sampleNote"], "locked": t["locked"], "payNow": t["payNow"],
                "payInApp": t["payInApp"], "tapYellow": t["tapYellow"], "payLink": t["payLink"],
-               "noSpeech": "—"},
+               "codeNote": "App 里这一行叫「订单号」", "noSpeech": "—"},
         "zhui": {"back": "返回"},
     }
 
@@ -445,6 +601,7 @@ MAP_EXTRA = {
                mStore="McDonald's Shanda Road",
                mTencentNote="backup map", mGoogleNote="may be offset inside China",
                mQrCap="Open the map for this restaurant",
+               mTransport="metro / bus",
                mTaxiLocal="Show this screen to the taxi driver. The Chinese address is above."),
     "ru": dict(mHowto="Мне нужно в этот McDonald's. Покажите большой китайский блок водителю.",
                mHowToGo="как добраться", mQr="сканируйте, чтобы открыть карту", mTaxi="покажите водителю",
@@ -452,13 +609,15 @@ MAP_EXTRA = {
                mStore="Макдональдс на Шаньда-роуд",
                mTencentNote="резервная карта", mGoogleNote="внутри Китая возможен сдвиг",
                mQrCap="Открыть карту этого ресторана",
+               mTransport="метро / автобус",
                mTaxiLocal="Покажите этот экран водителю такси. Китайский адрес — выше."),
     "ja": dict(mHowto="このマクドナルドに行きます。大きな中国語の部分を運転手に見せてください。",
                mHowToGo="行き方", mQr="スキャンして地図を開く", mTaxi="運転手に見せる",
-               mSpeak="住所を読み上げる", mAddr="山大路146-6号（成大高科）1階",
+               mSpeak="住所を読み上げる", mAddr="山東路（シャンダー通り）146-6号 成大高科ビル1階",
                mStore="マクドナルド山大路店",
                mTencentNote="予備の地図", mGoogleNote="中国国内では位置がずれる場合があります",
                mQrCap="この店の地図を開く",
+               mTransport="地下鉄・バス",
                mTaxiLocal="この画面をタクシーの運転手に見せてください。中国語の住所は上にあります。"),
     "ar": dict(mHowto="أريد الذهاب إلى هذا المطعم. اعرض المربع الصيني الكبير على السائق.",
                mHowToGo="كيف أصل", mQr="امسح لفتح الخريطة", mTaxi="اعرض على السائق",
@@ -466,6 +625,7 @@ MAP_EXTRA = {
                mStore="ماكدونالدز شارع شاندا",
                mTencentNote="خريطة بديلة", mGoogleNote="قد يكون هناك انحراف داخل الصين",
                mQrCap="افتح خريطة هذا الفرع",
+               mTransport="المترو والحافلة",
                mTaxiLocal="اعرض هذه الشاشة على سائق التاكسي. العنوان الصيني في الأعلى."),
 }
 for _k, _v in MAP_EXTRA.items():
@@ -529,7 +689,15 @@ def build_map(lang, store, sample=False):
         "qr": ({"dataUri": qr_uri, "capZh": "扫码打开高德地图", "capLocal": t["mQrCap"]} if qr_uri else None),
         "taxi": {"hello": PHRASES.get("taxi_hello", "师傅您好，麻烦送我到这里，谢谢！"),
                  "addressZh": addr, "nameZh": name, "local": t["mTaxiLocal"]},
-        "sec": {"howToGo": t["mHowToGo"], "qr": t["mQr"], "taxi": t["mTaxi"]},
+        # 地铁 / 公交：只给「问店员的中文问句」+「地图里怎么搜」，绝不编站名
+        "transport": [
+            {"icon": "🚇", "zh": PHRASES.get("ask_metro", "请问最近的地铁站怎么走？"),
+             "local": t["metro"]},
+            {"icon": "🚌", "zh": PHRASES.get("ask_bus", "请问最近的公交站在哪里？"),
+             "local": t["bus"]},
+        ],
+        "sec": {"howToGo": t["mHowToGo"], "qr": t["mQr"], "taxi": t["mTaxi"],
+                "transport": t["mTransport"]},
         "ui": {"speak": t["mSpeak"], "stale": t["stale"], "sampleNote": t["sampleNote"],
                "back": t["back"], "noSpeech": "—"},
         "zhui": {"back": "返回"},
@@ -572,18 +740,67 @@ def try_png(html_path):
     return png
 
 
+def apply_tr(lang, path):
+    """运行时翻译注入：把 --tr 提供的 JSON 覆盖/新增到 L[lang]。
+
+    目的：卡片内置文案只覆盖 en/ru/ja/ar；其他语言（ko/fr/es/de…）**绝不允许回退英文**，
+    而是由 Skill 当场翻译后通过 --tr 传进来。
+    """
+    data = json.load(open(path, encoding="utf-8"))
+    if lang not in L:
+        L[lang] = dict(L["en"])          # 结构骨架用 en，所有可见文案必须被 data 覆盖
+    t = L[lang]
+    for k, v in data.items():
+        if k in ("st", "sa") and isinstance(v, dict):
+            t[k] = {**t.get(k, {}), **v}
+        elif k == "vocab" and isinstance(v, list):
+            t[k] = [(x[0], x[1]) for x in v]
+        elif k == "pills" and isinstance(v, list):
+            t[k] = [(x[0], x[1], x[2] if len(x) > 2 else "outline",
+                     x[3] if len(x) > 3 else "") for x in v]
+        else:
+            t[k] = v
+    return sorted(data.keys())
+
+
+def dump_keys(lang):
+    """输出该语言需要翻译的全部 key（以 en 为底），供 Skill 当场翻译。"""
+    base = dict(L["en"])
+    base["_lang"] = lang
+    return json.dumps(base, ensure_ascii=False, indent=1)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--type", default="counter", choices=["counter", "pickup", "payment", "map"])
     ap.add_argument("--lang", default="en")
-    ap.add_argument("--out", required=True)
+    ap.add_argument("--out")
     ap.add_argument("--sample", dest="sample_path", default=DEFAULT_SAMPLE)
     ap.add_argument("--pickup-code", default="")
     ap.add_argument("--store-code", default="3350020")
     ap.add_argument("--store-sample", default=None)
     ap.add_argument("--demo", action="store_true")
     ap.add_argument("--png", action="store_true")
+    ap.add_argument("--tr", default=None, help="运行时翻译 JSON（非内置语言必填）")
+    ap.add_argument("--dump-keys", dest="dump_keys", default=None,
+                    help="输出该语言要翻译的 key 骨架，例如 --dump-keys ko")
     a = ap.parse_args()
+
+    if a.dump_keys:
+        print(dump_keys(a.dump_keys))
+        return
+    if not a.out:
+        ap.error("--out is required")
+
+    if a.tr:
+        keys = apply_tr(a.lang, a.tr)
+        print("L10N -> %s (%d keys)" % (a.tr, len(keys)))
+    elif a.lang not in L:
+        raise SystemExit(
+            "语言 %s 没有内置卡片文案。请先 `--dump-keys %s` 拿到 key 骨架，"
+            "翻译成 %s 后用 `--tr <file> --lang %s` 传入。**不要用英文或中文顶替。**"
+            % (a.lang, a.lang, a.lang, a.lang))
+
     print("HTML ->", render(a.type, a.lang, a.out, a.sample_path, a.pickup_code, a.demo,
                             a.store_code, a.store_sample))
     if a.png:
