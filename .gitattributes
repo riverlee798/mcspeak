@@ -1,0 +1,14 @@
+# 统一换行：仓库内一律 LF，避免 Windows 检出后字节变化
+* text=auto eol=lf
+
+# 参赛声明必须与官方文件字节完全一致 → 禁止任何换行转换
+CONTEST_DECLARATION.md -text
+
+# 对话记录与文档：LF
+workbuddy.md text eol=lf
+*.md text eol=lf
+*.py text eol=lf
+
+# 二进制
+*.zip binary
+*.png binary

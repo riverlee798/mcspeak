@@ -56,9 +56,9 @@ mcspeak 不做"翻译"，做**点餐这件事本身**：它真的会调麦当劳
 
 ## 安装方法
 
-### 1. 配置麦当劳 MCP 连接器
+### 1. 配置麦当劳 MCP 连接器（**先做这一步，两种安装方式都需要**）
 
-在 WorkBuddy 的**连接器管理**里添加 `mcd-mcp`（麦当劳中国官方 MCP），或在 `~/.workbuddy/mcp.json` 里加入：
+在 WorkBuddy 的**连接器管理**里添加 `mcd-mcp`（麦当劳中国官方 MCP），或编辑 `~/.workbuddy/mcp.json`：
 
 ```jsonc
 {
@@ -72,31 +72,45 @@ mcspeak 不做"翻译"，做**点餐这件事本身**：它真的会调麦当劳
 }
 ```
 
-仓库里给了模板 `mcp-config.example.json`，**只放环境变量占位符，不含任何真实 Token**。填好环境变量后重启 WorkBuddy。
+`${MCD_MCP_URL}` / `${MCD_MCP_TOKEN}` 换成你自己的连接地址与令牌（**不要把真实 Token 写进仓库**）。
+仓库里的 `mcp-config.example.json` 就是这份模板，只含占位符。填好后重启 WorkBuddy，连接器状态显示已连接再装技能。
 
 > 为什么需要它：菜单、门店、券、下单、订单状态、取餐码全部来自这套官方接口，没有它 mcspeak 只能做翻译。
 
 ### 2. 安装技能
 
+技能包在 **`dist/mcspeak-skill.zip`**（146 KB / 41 个文件，只含运行时需要的部分：`SKILL.md`、`references/`（含已脱敏 samples）、`templates/`、`scripts/`、`data/README.md`）。
+`SKILL.md` 在 zip 根目录，解压后它必须直接位于技能目录第一层。
+
+**方式 ① WorkBuddy 界面（推荐）**
+
+> **技能 → 添加技能 → 上传技能** → 选择 `dist/mcspeak-skill.zip` → 安装完成后在技能列表里确认出现 **mcspeak**。
+
+**方式 ② 手动解压**
+
 ```bash
-git clone <this-repo> ~/.workbuddy/skills/mcspeak
-# 或者：把本目录整体复制到
-#   Windows: C:\Users\<you>\.workbuddy\skills\mcspeak
-#   macOS/Linux: ~/.workbuddy/skills/mcspeak
+# Windows（PowerShell）
+Expand-Archive -Path dist\mcspeak-skill.zip -DestinationPath "$env:USERPROFILE\.workbuddy\skills\mcspeak" -Force
+
+# macOS / Linux
+mkdir -p ~/.workbuddy/skills/mcspeak
+unzip -o dist/mcspeak-skill.zip -d ~/.workbuddy/skills/mcspeak
 ```
 
-目录结构（`SKILL.md` 必须在根）：
+装完的目录应该是这样（`SKILL.md` 在第一层，不再多套一层文件夹）：
 
 ```
-mcspeak/
+~/.workbuddy/skills/mcspeak/
 ├── SKILL.md                 技能主文件（S1–S16 全流程）
-├── references/              6 个参考文件 + 22 个真实样本
-├── templates/               4 个卡片模板（单文件 HTML）
+├── references/              6 个参考文件 + 24 个已脱敏样本
+├── templates/               4 个卡片模板（单文件 HTML，离线可用）
 ├── scripts/                 render_card.py · demo.py · check_privacy.py
-├── examples/                三语示例卡（可直接打开）
-├── docs/                    GitHub Pages 用（index.html + examples/ 三语卡片）
-└── data/                    运行时偏好（不随仓库提交）
+└── data/README.md           运行时偏好目录说明（profile.json 首次写入时创建）
 ```
+
+> 从源码仓库直接用也可以：把整个仓库（`examples/`、`docs/` 是给评审看示例的，可留着）复制到
+> `Windows: C:\Users\<you>\.workbuddy\skills\mcspeak` / `macOS: ~/.workbuddy/skills/mcspeak`。
+> 这只影响体积，不影响运行。
 
 ### 3. 验证
 

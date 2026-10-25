@@ -39,6 +39,8 @@ PATTERNS = [
     ("PICKUP",   re.compile(r'"pickupCode"\s*:\s*"(\d{3,6})"')),
     ("COUPON_ID",   re.compile(r'"couponId"\s*:\s*"([A-Fa-f0-9]{16,})"')),
     ("COUPON_CODE", re.compile(r"\b(MCD[0-9A-Z]{10,})\b")),
+    ("LONGNUM",  re.compile(r"(?<!\d)(\d{18,})(?!\d)")),
+    ("PAYLINK",  re.compile(r"(m\.mcd\.cn/[^\s`)]*orderId=\d+)")),
     ("PHONE",    re.compile(r"(?<!\d)(1[3-9]\d{9})(?!\d)")),
     ("IDCARD",   re.compile(r"(?<!\d)(\d{17}[\dXx])(?!\d)")),
     ("EMAIL",    re.compile(r"[\w.+-]+@[\w-]+\.[\w.]{2,}")),
@@ -54,7 +56,17 @@ REPLACE = {
 }
 
 SKIP_DIRS = {".git", "__pycache__", "node_modules"}
+SKIP_FILES = {"check_privacy.py"}
 SCAN_EXT = {".json", ".md", ".html", ".py", ".txt", ".yml", ".yaml", ".example"}
+
+# 本项目实测产生过的真实值（黑名单，命中即报，--fix 直接替换）
+# 这样即使它们出现在散文、表格、HTML 里也能兜住，不依赖字段名
+BLOCKED = {
+    "1030257900000808640311879529": "1030000000000000000000000001",   # 实单订单号
+    "1030727650000765323997999716": "1030000000000000000000000002",   # 历史单订单号
+    "111034179157818343424": "1110000000000000000001",               # 支付单号 payId
+    "35214": "00000",                                                # 真实取餐码
+}
 
 # 脱敏后自己留下的占位值，不算命中
 SAFE = {
@@ -63,8 +75,13 @@ SAFE = {
 }
 
 
+GENERIC_HOSTS = ("git@github.com", "git@gitlab.com", "noreply@", "users.noreply.github.com")
+
+
 def is_safe(val):
     if val in SAFE or val.startswith("https://example.invalid") or val.startswith("13****"):
+        return True
+    if any(val.startswith(h) or h in val for h in GENERIC_HOSTS):
         return True
     # 脱敏占位：1030…0001 / 1110…0001 系列
     return bool(re.fullmatch(r"1(?:03|11)0{18,}\d{1,3}", val))
@@ -74,6 +91,8 @@ def iter_files():
     for base, dirs, files in os.walk(ROOT):
         dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
         for fn in files:
+            if fn in SKIP_FILES:
+                continue
             ext = os.path.splitext(fn)[1].lower()
             if ext in SCAN_EXT or fn == "mcp-config.example.json":
                 yield os.path.join(base, fn)
@@ -92,6 +111,9 @@ def scan():
                 if is_safe(val):
                     continue
                 report.append((name, os.path.relpath(path, ROOT), val[:48]))
+        for k in BLOCKED:
+            if k in text and not (len(k) == 5 and k == "00000"):
+                report.append(("KNOWN", os.path.relpath(path, ROOT), k))
     return report
 
 
@@ -102,7 +124,7 @@ def fix_samples():
     targets += sorted(glob.glob(os.path.join(ROOT, "references", "*.md")))
     targets += sorted(glob.glob(os.path.join(ROOT, "*.md")))
     for path in targets:
-        raw = open(path, encoding="utf-8").read()
+        raw = open(path, encoding="utf-8", newline="").read().replace("\r\n", "\n").replace("\r", "\n")
         new = raw
         for key, rep in REPLACE.items():
             new = re.sub(r'("%s"\s*:\s*")[^"]*(")' % key, lambda m: m.group(1) + rep + m.group(2), new)
@@ -113,14 +135,19 @@ def fix_samples():
         new = re.sub(r"(?<!\d)1[3-9](\d{9})(?!\d)", lambda m: "13****" + m.group(1)[-4:], new)
         if path.endswith(".md"):
             # 文档散文里的裸订单号/支付单号（18 位以上连续数字）
+            new = re.sub(r"(m\.mcd\.cn/[^\s`)]*orderId=)\d+", r"\g<1>REDACTED", new)
+
             def _num(m):
                 v = m.group(0)
                 return v if v.startswith("1110000000000000000") else "1030000000000000000000000001"
             new = re.sub(r"(?<!\d)\d{18,}(?!\d)", _num, new)
             # 反引号里的真实取餐码（5 位）
             new = re.sub(r"`(\d{5})`", "`00000`", new)
+        # 黑名单里的真实值：不管出现在字段、散文还是表格，一律替换
+        for k, v in BLOCKED.items():
+            new = new.replace(k, v)
         if new != raw:
-            open(path, "w", encoding="utf-8").write(new)
+            open(path, "w", encoding="utf-8", newline="\n").write(new)
             changed.append(os.path.relpath(path, ROOT))
     # 索引里的订单号
     idx = os.path.join(ROOT, "references", "samples", "00-index.md")
