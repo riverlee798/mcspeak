@@ -4,6 +4,8 @@
 
 > 参赛作品：**麦当劳程序员创意开发大赛** · **WaytoAGI 1024 用餐赛道**
 > 形态：WorkBuddy Skill（本仓库即技能目录）· 底层能力：麦当劳中国官方 MCP（`mcd-mcp`）
+>
+> 🔗 仓库 <https://github.com/riverlee798/mcspeak> · 🃏 **线上示例（手机可开）** <https://riverlee798.github.io/mcspeak/>
 
 ---
 
@@ -165,17 +167,21 @@ unzip -o dist/mcspeak-skill.zip -d ~/.workbuddy/skills/mcspeak
 
 > 📷 `docs/screenshots/ja-1-pickup.png`（待补）
 
-### 卡片在线预览（GitHub Pages）
-
-启用 Pages（`Settings → Pages → Branch: main / docs`）后可直接用手机打开：
+### 卡片在线预览（已上线，手机可直接打开）
 
 ```
-https://<your-name>.github.io/<repo>/                  入口（docs/index.html）
-https://<your-name>.github.io/<repo>/examples/         三语示例总览
-https://<your-name>.github.io/<repo>/examples/ar/      阿拉伯语（RTL）
-https://<your-name>.github.io/<repo>/examples/ru/      俄语
-https://<your-name>.github.io/<repo>/examples/ja/      日语
+https://riverlee798.github.io/mcspeak/                  入口
+https://riverlee798.github.io/mcspeak/examples/         三语示例总览
+https://riverlee798.github.io/mcspeak/examples/ar/      阿拉伯语（RTL）
+https://riverlee798.github.io/mcspeak/examples/ru/      俄语
+https://riverlee798.github.io/mcspeak/examples/ja/      日语
 ```
+
+单张也能直达，例如
+`https://riverlee798.github.io/mcspeak/examples/ar/pickup_card.html`。
+
+> 部署方式（复现用）：`Settings → Pages → Source: Deploy from a branch → main / /docs`。
+> 所有卡片都是单文件 HTML、CSS/JS 内联、零外部依赖，Pages 只是把它放到公网而已。
 
 ---
 
